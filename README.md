@@ -2,8 +2,9 @@
 
 > AI-Powered Developer Portfolio Builder
 
-![Portly Logo](./assets/logo.png)
-
+<p align="center">
+  <img src="./logo.png" width="200" />
+</p>
 ---
 
 ## 📌 Overview
