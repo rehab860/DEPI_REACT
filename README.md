@@ -1,13 +1,7 @@
 # 🏢 ReeVue — Company & Interview Review Platform
 
 > **Your Experience. Our Community.**
-> A community-driven platform where job seekers share real experiences about job interviews and working at companies — so others can make informed decisions before applying.
-
----
-
-<p align="center">
-  <img src="https://via.placeholder.com/600x200?text=ReviewHub" alt="ReviewHub Banner"/>
-</p>
+> A community-driven platform where job seekers share real experiences about job interviews and working at companies — so others can make informed decisions before applying.>
 
 ---
 
