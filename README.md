@@ -92,8 +92,8 @@ QA testing across all features. Fix bugs. Deploy frontend to Vercel and backend 
 | **Rehab Mohammed** | Review Submission Form | User Profile Page |
 | **Abdelrahman Montaser** | Interview Q&A Page | Notification Page |
 | **Noor Karem** | Home Page | Saved Companies Page |
-| **Basmala Omar** | 🔄 Pending | 🔄 Pending |
-| **Yasmin Abdelhalim** | 🔄 Pending | 🔄 Pending |
+| **Basmala Omar** | Company Profile Page | Trending Page |
+| **Yasmin Abdelhalim** | Search Results Page | Login / Signup Page|
 
 ### 🔧 Backend & Database
 > All 5 members collaborate together on the backend and database.
