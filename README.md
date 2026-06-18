@@ -1,7 +1,7 @@
 # 🏢 ReeVue — Company & Interview Review Platform
 
 > **Your Experience. Our Community.**
-> A community-driven platform where job seekers share real experiences about job interviews and working at companies — so others can make informed decisions before applying.>
+> A community-driven platform where job seekers share real experiences about job interviews and working at companies — so others can make informed decisions before applying.
 
 ---
 
@@ -116,6 +116,21 @@ QA testing across all features. Fix bugs. Deploy frontend to Vercel and backend 
 ## 📚 References & Inspiration
 
 - [Glassdoor](https://glassdoor.com) — market leader in company reviews
-
 - [Blind (TeamBlind)](https://teamblind.com) — anonymous professional community
 
+---
+
+## 🚀 How to Run Locally
+
+### Prerequisites
+- Node.js (v18+)
+
+### Steps
+1. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+2. **Run the development server:**
+   ```bash
+   npm run dev
+   ```

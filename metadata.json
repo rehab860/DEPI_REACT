@@ -1,0 +1,6 @@
+{
+  "name": "ReeVue",
+  "description": "Authentic, editorialized company reviews and interview database for the modern professional.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
