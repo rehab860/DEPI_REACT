@@ -12,15 +12,28 @@ export default function LoginScreen({
 }: LoginScreenProps) {
   
   const [activeTab, setActiveTab] = useState<'signin' | 'signup'>('signin');
-  const [email, setEmail] = useState('alex@reevue-expert.com');
-  const [pwd, setPwd] = useState('password123');
-  const [name, setName] = useState('Alex D.');
+  const [email, setEmail] = useState('');
+  const [pwd, setPwd] = useState('');
+  const [name, setName] = useState('');
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (email.trim() && pwd.trim()) {
-      onLoginSuccess(activeTab === 'signup' ? name : 'Alex D.', email);
-      setActiveScreen('home');
+    setError(null);
+    if (activeTab === 'signin') {
+      if (email.trim() === 'alex@reevue-expert.com' && pwd === 'password123') {
+        onLoginSuccess('Alex D.', email.trim());
+        setActiveScreen('home');
+      } else {
+        setError('Invalid credentials. Please use: alex@reevue-expert.com / password123');
+      }
+    } else {
+      if (email.trim() && pwd.trim()) {
+        onLoginSuccess(name.trim() || 'New User', email.trim());
+        setActiveScreen('home');
+      } else {
+        setError('Please fill in all fields.');
+      }
     }
   };
 
@@ -97,6 +110,13 @@ export default function LoginScreen({
 
           {/* Form container */}
           <form onSubmit={handleSubmit} className="space-y-5" id="login-core-form">
+            
+            {error && (
+              <div className="flex items-center space-x-2 text-red-600 bg-red-50 p-3 rounded-xl text-xs border border-red-100 animate-fadeIn">
+                <ShieldAlert className="w-4 h-4 shrink-0" />
+                <span>{error}</span>
+              </div>
+            )}
             
             {/* Display Name (Only present on signup) */}
             {activeTab === 'signup' && (

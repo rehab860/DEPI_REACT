@@ -34,10 +34,10 @@ export default function App() {
   const [notifications, setNotifications] = useState<AppNotification[]>(INITIAL_NOTIFICATIONS);
   const [watchlist, setWatchlist] = useState<string[]>(INITIAL_WATCHLIST);
   const [user, setUser] = useState<UserProfile>(INITIAL_PROFILE);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   // Routing states
-  const [activeScreen, setActiveScreen] = useState<string>('home');
+  const [activeScreen, setActiveScreen] = useState<string>('login');
   const [selectedCompanyId, setSelectedCompanyId] = useState<string>('technova');
   const [searchQuery, setSearchQuery] = useState<string>('');
 
