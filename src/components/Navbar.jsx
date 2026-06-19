@@ -20,10 +20,13 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
         navigate('/notifications');
     };
     const handleSearchSubmit = (e) => {
-        e.preventDefault();
-        onSearch(localSearch);
-        onTabChange('trending');
-        setIsNavCollapsed(true);
+    e.preventDefault();
+
+    if (!localSearch.trim()) return;
+
+    onSearch(localSearch.trim());
+
+    setIsNavCollapsed(true);
     };
     const handleTabClick = (tab, e) => {
         e.preventDefault();

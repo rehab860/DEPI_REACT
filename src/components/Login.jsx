@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 export const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -26,8 +26,7 @@ export const Login = ({ onLogin }) => {
         e.preventDefault();
         if (!validateForm())
             return;
-        // In a real application we would authenticate here
-        // For this mock layout, we extract a default display name from the email
+        // For mock layout, we extract a default display name from the email
         const namePart = email.split('@')[0];
         const formattedName = namePart
             .split('.')
@@ -35,11 +34,11 @@ export const Login = ({ onLogin }) => {
             .join(' ');
         onLogin(formattedName || 'Jane Doe', email.toLowerCase());
     };
-    const handleFillDemo = () => {
-        setEmail('student@reevue.edu');
-        setPassword('password123');
-        setErrors({});
-    };
+    // const handleFillDemo = () => {
+    //     setEmail('student@reevue.edu');
+    //     setPassword('password123');
+    //     setErrors({});
+    // };
     return (<div className="d-flex align-items-center justify-content-center bg-light min-vh-100" style={{
             background: 'linear-gradient(135deg, var(--light-teal-bg) 0%, #F8F9FA 100%)',
             padding: '24px',
@@ -81,13 +80,13 @@ export const Login = ({ onLogin }) => {
           </button>
         </form>
 
-        {/* Demo login option */}
+        {/* Demo login option
         <div className="text-center mt-3 pt-3 border-top border-light">
           <p className="small text-muted mb-2">Want to test with mock student details?</p>
           <button type="button" onClick={handleFillDemo} className="btn btn-secondary-custom rounded-pill btn-sm px-4">
             Fill Demo Credentials
           </button>
-        </div>
+        </div> */}
       </div>
     </div>);
 };

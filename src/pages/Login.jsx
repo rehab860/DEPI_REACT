@@ -1,4 +1,4 @@
-import {React , useContext} from 'react';
+import { useContext} from 'react';
 import AuthContext from '../context/AuthContext';
 
 
@@ -15,12 +15,12 @@ export const Login = () => {
     }
     const handleLogin = (name, email) => {
         const mockUser = {
-            name,
-            email,
-            avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
-            bio: 'CS student. Curious about candidate experience metrics, system designs, and loops.',
-            reviewsWritten: email.toLowerCase() === 'student@reevue.edu' ? ['rev-1'] : [],
-        };
+    name,
+    email,
+    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
+    bio: 'CS student. Curious about candidate experience metrics, system designs, and loops.',
+    reviewsWritten: [],
+};
         login({
             user: mockUser,
             token: 'mock-jwt-session-token-v1',
