@@ -7,13 +7,14 @@
 
 ## 👥 Team Members
 
-| Name |
-|------|
-| Rehab Mohammed |
-| Basmala Omar |
-| Yasmin Abdelhalim |
-| Noor Karem |
-| Abdelrahman Montaser |
+| Member | Pages |
+|--------|-------|
+| **Rehab Mohammed** | Review Submission Form · User Profile · Interview Q&A |
+| **Noor Karem** | Home Page · Saved Companies · Notifications |
+| **Basmala Omar** | Company Profile · Trending |
+| **Yasmin Abdelhalim** | Login / Signup · Search Results |
+
+> ⚠️ Abdelrahman Montaser left the team. His pages (Interview Q&A + Notifications) were redistributed to Rehab and Noor.
 
 **Instructor:** Hesham Mohammed
 
@@ -23,114 +24,137 @@
 
 ReeVue maps real interview and workplace experiences to help job seekers make smarter decisions. Think of it like **Google Reviews — but for companies and job interviews**.
 
-Users can search for a company, read what others said about their interview process (difficulty, rounds, HR attitude), and learn what it's really like working there (culture, salary, management). They can also leave their own reviews anonymously.
-
----
-
-## 🎯 Project Scope
-
-- Build a full-stack review platform with anonymous posting
-- Implement company profiles with aggregated ratings and interview data
-- Enable search and filtering by industry, city, rating, and difficulty
-- Allow users to share actual interview questions by role
-- Support salary data shared anonymously by users
-- Provide email notifications for watched companies
-- Moderate content using AI to flag spam or hate speech
+Users can search for a company, read what others said about their interview process, and learn what it's really like working there. They can also leave their own reviews anonymously.
 
 ---
 
 ## ✅ Features
 
-### 🔍 Search & Discovery
-Users can search and filter companies by name, industry, city, size, rating, and difficulty, with trending and recently reviewed sections.
-
-### ⭐ Review System
-Reviews cover Interview Difficulty, HR Communication, Offer Transparency, Work-Life Balance, and Culture — all posted anonymously. Users can upvote, downvote, or flag reviews, and an AI moderator filters spam and hate speech.
-
-### 🏢 Company Profiles
-Company profiles are auto-populated with logo, size, location, average ratings, interview timelines, and anonymous salary ranges.
-
-### 👤 User Accounts
-Accounts let users track their submitted reviews and save companies to a watchlist.
-
-### 💬 Community & Trust
-Under each review, there are comment threads for discussion, with rate-limited posting to keep things fair.
-
-### 📋 Interview Q&A
-Users can share and answer real interview questions per role and department.
-
-### 🔔 Notifications & Alerts
-Get email alerts when a watched company gets new reviews or starts actively hiring.
+- **Search & Discovery** — filter companies by name, industry, city, size, rating, and difficulty
+- **Review System** — anonymous reviews covering Interview Difficulty, HR Communication, Offer Transparency, Work-Life Balance, and Culture with upvote/downvote
+- **Company Profiles** — ratings, interview difficulty, offer rate, salary ranges
+- **Interview Q&A** — share and browse real interview questions by role and department
+- **Watchlist** — save companies to a personal saved list
+- **Notifications** — alerts for activity on saved companies and Q&A replies
+- **User Profile** — track submitted reviews, saved companies, and Q&A contributions
+- **Trending** — weekly pulse of highest-momentum companies
+- **Authentication** — login/logout with session persisted in localStorage
 
 ---
 
-## 🗂️ Project Plan
+## 🛠️ Tech Stack
 
-### Week 1 — Kickoff & Setup
-Create GitHub repo, set up project management (Trello/Notion), define database schema, assign roles, and finalize design system.
-
-### Week 2 — UI/UX & Design
-Design wireframes and mockups. Build reusable components: navbar, cards, buttons, forms. Ensure mobile responsiveness.
-
-### Week 3 — Core Frontend Development
-Each member builds their assigned pages. Shared components finalized. Design system applied consistently across all pages.
-
-### Week 4 — Backend & Integration
-All members collaborate on backend API routes, database setup, and connecting frontend pages to live data.
-
-### Week 5 — Testing & Deployment
-QA testing across all features. Fix bugs. Deploy frontend to Vercel and backend to Railway/Supabase. Final review and demo prep.
+| Layer | Technology |
+|-------|-----------|
+| UI Framework | React 19 (JSX) |
+| Routing | React Router DOM v7 |
+| Styling | Bootstrap 5 + Bootstrap Icons |
+| State Management | React Context API (useReducer) |
+| Build Tool | Vite |
+| Package Manager | npm |
 
 ---
 
-## 👨‍💻 Task Distribution
+## 📁 Project Structure
 
-### 🎨 Frontend Pages
-
-| Member | Page 1 | Page 2 |
-|--------|--------|--------|
-| **Rehab Mohammed** | Review Submission Form | User Profile Page |
-| **Abdelrahman Montaser** | Interview Q&A Page | Notification Page |
-| **Noor Karem** | Home Page | Saved Companies Page |
-| **Basmala Omar** | Company Profile Page | Trending Page |
-| **Yasmin Abdelhalim** | Search Results Page | Login / Signup Page|
-
-### 🔧 Backend & Database
-> All 5 members collaborate together on the backend and database.
-
-- REST API routes (companies, reviews, users, Q&A, salary, notifications)
-- Database design and setup 
-- Authentication and session management
-- Data validation, security, and rate limiting
-- Admin and moderation endpoints
-
-### 🎨 UI/UX Design
-> All 5 members collaborate together on UI/UX.
-
-- Design system (colors, fonts, spacing, component library)
-- Wireframes and mockups for all pages
-- Mobile responsiveness
-- Reusable component library (buttons, cards, navbar, footer)
+```
+reevue/
+├── public/
+│   ├── favicon.svg
+│   └── icons.svg
+└── src/
+    ├── context/
+    │   ├── AuthContext.jsx          ← Login/logout state, persisted in localStorage
+    │   └── CompaniesContext.jsx     ← Search filters state
+    ├── routes/
+    │   └── AppRouter.jsx            ← All routes + ProtectedRoute guard
+    ├── components/
+    │   ├── Navbar.jsx               ← Top navigation bar (shared)
+    │   ├── Footer.jsx               ← Footer (shared)
+    │   ├── ReviewCard.jsx           ← Reusable review card
+    │   ├── StarRating.jsx           ← Star rating widget
+    │   ├── CompanyDetails.jsx       ← Company info block
+    │   ├── Profile.jsx              ← User profile component
+    │   ├── SubmitReview.jsx         ← Review form component
+    │   └── Login.jsx                ← Login form component
+    ├── pages/
+    │   ├── Login.jsx                ← Yasmin
+    │   ├── Home.jsx                 ← Noor
+    │   ├── Trending.jsx             ← Basmala
+    │   ├── Search.jsx               ← Yasmin
+    │   ├── CompanyProfile.jsx       ← Basmala
+    │   ├── SubmitReview.jsx         ← Rehab
+    │   ├── UserProfile.jsx          ← Rehab
+    │   ├── InterviewQA.jsx          ← Rehab ⭐ (redistributed)
+    │   ├── SavedCompanies.jsx       ← Noor
+    │   ├── Notifications.jsx        ← Noor ⭐ (redistributed)
+    │   └── NotFound.jsx             ← 404 page
+    ├── App.jsx                      ← Root app + providers + navbar logic
+    ├── App.css
+    ├── index.css
+    ├── custom.css
+    └── main.jsx                     ← Entry point
+```
 
 ---
-## 📚 References & Inspiration
 
-- [Glassdoor](https://glassdoor.com) — market leader in company reviews
-- [Blind (TeamBlind)](https://teamblind.com) — anonymous professional community
+## 🔐 Routing
+
+| Path | Page | Access |
+|------|------|--------|
+| `/` | Home | Public |
+| `/trending` | Trending | Public |
+| `/search?q=...` | Search Results | Public |
+| `/company/:name` | Company Profile | Public |
+| `/login` | Login / Signup | Public |
+| `/submit-review` | Submit Review | 🔒 Login required |
+| `/profile` | User Profile | 🔒 Login required |
+| `/saved-companies` | Saved Companies | 🔒 Login required |
+| `/notifications` | Notifications | 🔒 Login required |
+| `/qa` | Interview Q&A | 🔒 Login required |
+| `*` | 404 Not Found | Public |
+
+Protected routes redirect to `/login` if the user is not authenticated.
+
+---
+
+## 🔄 State Management
+
+The app uses **React Context API** with `useReducer` for global state:
+
+- **AuthContext** — manages `user`, `token`, and `isLoggedIn`. Session is persisted in `localStorage` under the key `reevue_auth_v1` so the user stays logged in after page refresh.
+- **CompaniesContext** — manages search filter state (`industry`, `city`, `companySize`, `starRating`, `difficulty`) shared between the Search page and Navbar.
 
 ---
 
 ## 🚀 How to Run Locally
 
 ### Prerequisites
-- Node.js (v18+)
+- Node.js v18+
 
 ### Steps
-1. **Install dependencies:**
-   ```bash
-   npm install
-   ```
-2. **Run the development server:**
-   ```bash
-   npm run dev
-   ```
+
+```bash
+# 1. Install dependencies
+npm install
+
+# 2. Run development server
+npm run dev
+```
+
+App runs at: **http://localhost:5173**
+
+### Other commands
+
+```bash
+npm run build    # Production build
+npm run preview  # Preview production build
+npm run lint     # ESLint check
+```
+
+---
+
+## 📚 References & Inspiration
+
+- [Glassdoor](https://glassdoor.com) — market leader in company reviews
+- [Blind / TeamBlind](https://teamblind.com) — anonymous professional community
