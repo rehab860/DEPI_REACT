@@ -8,7 +8,7 @@ import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
 // Pages
 import Home from './pages/Home';
-import Trending from './pages/Trending';
+import Reviews from './pages/Reviews';
 import Search from './pages/Search';
 import CompanyProfile from './pages/CompanyProfile';
 import Login from './pages/Login';
@@ -59,8 +59,8 @@ function AppContent() {
         const path = location.pathname;
         if (path === '/')
             return 'home';
-        if (path === '/trending' || path === '/search')
-            return 'trending';
+        if (path === '/reviews' || path === '/search')
+            return 'reviews';
         if (path === '/submit-review')
             return 'submit';
         if (path === '/profile')
@@ -75,8 +75,8 @@ function AppContent() {
     const handleTabChange = (tab) => {
         if (tab === 'home')
             navigate('/');
-        if (tab === 'trending')
-            navigate('/trending');
+        if (tab === 'reviews')
+            navigate('/reviews');
         if (tab === 'submit')
             navigate('/submit-review');
         if (tab === 'profile')
@@ -93,7 +93,7 @@ function AppContent() {
             navigate(`/search?q=${encodeURIComponent(query)}`);
         }
         else {
-            navigate('/trending');
+            navigate('/reviews');
         }
     };
     const handleSignOut = () => {
@@ -115,7 +115,7 @@ function AppContent() {
                 <Routes>
                     {/* Public Routes */}
                     <Route path="/" element={<Home />} />
-                    <Route path="/trending" element={<Trending />} />
+                    <Route path="/reviews" element={<Reviews />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/company/:name" element={<CompanyProfile />} />
                     <Route path="/login" element={<Login />} />

@@ -237,7 +237,7 @@ export const SubmitReview = () => {
                 localStorage.setItem('reevue_reviews_v1', JSON.stringify([newReview, ...currentList]));
             }
             localStorage.removeItem('reevue_review_draft'); // clear draft
-            navigate('/trending');
+            navigate('/reviews');
         }
         catch (err) {
             console.error('Failed to submit review', err);

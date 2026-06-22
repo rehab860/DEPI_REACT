@@ -56,8 +56,8 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
             </a>
           </li>
           <li className="nav-item">
-            <a className={`nav-link px-3 ${activeTab === 'trending' ? 'text-teal active fw-bold' : 'text-dark'}`} href="#trending" onClick={(e) => handleTabClick('trending', e)}>
-              Trending
+            <a className={`nav-link px-3 ${activeTab === 'reviews' ? 'text-teal active fw-bold' : 'text-dark'}`} href="#reviews" onClick={(e) => handleTabClick('reviews', e)}>
+              Reviews
             </a>
           </li>
           <li className="nav-item">

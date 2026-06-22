@@ -1,6 +1,9 @@
 @import "bootstrap/dist/css/bootstrap.min.css";
 @import "bootstrap-icons/font/bootstrap-icons.css";
 @import "./custom.css";
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Sora:wght@700&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@1,600;1,700&display=swap');
 
 #root {
   min-height: 100vh;

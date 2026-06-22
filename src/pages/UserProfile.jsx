@@ -89,11 +89,8 @@ export const UserProfile = () => {
   const handleEditReview = (id) => {
     navigate('/submit-review', { state: { editingReviewId: id } });
   };
-  // Mock saved companies list
-  const mockSavedCompanies = [
-    { name: 'Google', avgRating: 4.5, reviewCount: 2, difficulty: 'Medium' },
-    { name: 'Stripe', avgRating: 4.8, reviewCount: 1, difficulty: 'Hard' },
-  ];
+  // saved companies list
+  const mockSavedCompanies = JSON.parse(localStorage.getItem('reevue_saved_companies') || '[]');
   // Achievements Badges mapping
   const renderBadges = () => {
     const badges = [];

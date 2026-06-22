@@ -145,48 +145,27 @@ export const Home = () => {
   return (
     <div className="animate-fade-in">
       {/* Hero section */}
-      <section className="section-white">
-        <div className="container py-4">
+      <section className="section-white d-flex align-items-center" style={{ backgroundImage: 'url(/hero-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '90vh' }}>
+        <div className="container ">
           <div className="row align-items-center justify-content-between gy-5">
             <div className="col-12 col-lg-6">
-              <h1 className="display-4 fw-bold mb-3" style={{ lineHeight: '1.2' }}>
-                Find the <span className="text-teal text-gradient">Real Truth</span> about Tech Careers
+              <h1 className="display-4 fw-bold mb-3" style={{ lineHeight: '1.2' , fontFamily: "'Sora', sans-serif"}}>
+                Find the <span className="text-teal text-gradient" style={{
+  fontFamily: '"Playfair Display", serif',
+  fontStyle: 'italic',
+  fontWeight: 700,
+}}>Real Truth</span> about Tech Careers
               </h1>
               <p className="lead text-muted mb-4" style={{ lineHeight: '1.7' }}>
                 Explore interview difficulty levels, realistic job reviews, pros, and cons. Written by engineers, for engineers.
               </p>
               <div className="d-flex flex-wrap gap-3">
-                <button onClick={() => navigate('/trending')} className="btn btn-primary-teal rounded-pill d-inline-flex align-items-center gap-2">
+                <button onClick={() => navigate('/reviews')} className="btn btn-primary-teal rounded-pill d-inline-flex align-items-center gap-2">
                   <i className="bi bi-fire"></i> Browse Reviews
                 </button>
                 <button onClick={() => navigate('/submit-review')} className="btn btn-secondary-custom rounded-pill">
                   Submit a Review
                 </button>
-              </div>
-            </div>
-            <div className="col-12 col-lg-5 text-center">
-              <div className="p-5 rounded-4 d-flex flex-column justify-content-center align-items-center text-center shadow-sm"
-                style={{
-                  background: 'linear-gradient(135deg, var(--light-teal-bg), #FFFFFF)',
-                  border: '1px solid rgba(0, 83, 91, 0.05)',
-                  minHeight: '300px',
-                }}>
-                <i className="bi bi-clipboard-data text-teal display-3 mb-3"></i>
-                <h5 className="fw-bold mb-2">Platform Overview</h5>
-                <div className="d-flex gap-4 mt-3">
-                  <div className="text-center">
-                    <div className="fs-3 fw-bold text-teal">{reviews.length}</div>
-                    <div className="small text-muted">Reviews</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="fs-3 fw-bold text-teal">{totalAvgRating}★</div>
-                    <div className="small text-muted">Avg Rating</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="fs-3 fw-bold text-teal">{totalRecommend}%</div>
-                    <div className="small text-muted">Recommend</div>
-                  </div>
-                </div>
               </div>
             </div>
           </div>
@@ -231,7 +210,7 @@ export const Home = () => {
               <h2 className="fw-bold mb-1">Highest Rated Reviews</h2>
               <p className="text-muted small mb-0">Peer recommendations boasting the best ratings</p>
             </div>
-            <button type="button" onClick={() => navigate('/trending')} className="btn btn-tertiary-custom btn-sm">
+            <button type="button" onClick={() => navigate('/reviews')} className="btn btn-tertiary-custom btn-sm">
               View all reviews
             </button>
           </div>

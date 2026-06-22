@@ -4,7 +4,7 @@ import AuthContext from '../context/AuthContext';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { ReviewCard } from '../components/ReviewCard';
-export const Trending = () => {
+export const Reviews = () => {
     const navigate = useNavigate();
   const { auth, login, logout, updateProfile } = useContext(AuthContext);
   const user = auth?.user;
@@ -97,7 +97,7 @@ export const Trending = () => {
             <div className="small">
               Showing reviews matching: <strong className="text-teal">"{searchQuery}"</strong>
             </div>
-            <button type="button" onClick={() => navigate('/trending')} className="btn btn-sm btn-secondary-custom rounded-pill py-1 px-3" style={{ fontSize: '0.8rem' }}>
+            <button type="button" onClick={() => navigate('/reviews')} className="btn btn-sm btn-secondary-custom rounded-pill py-1 px-3" style={{ fontSize: '0.8rem' }}>
               Clear Search
             </button>
           </div>)}
@@ -136,7 +136,7 @@ export const Trending = () => {
               <button onClick={() => {
                 setSelectedDifficulty('All');
                 setSelectedSort('Helpful');
-                navigate('/trending');
+                navigate('/reviews');
             }} className="btn btn-secondary-custom rounded-pill mt-2">
                 Reset All Filters
               </button>
@@ -145,4 +145,4 @@ export const Trending = () => {
       </div>
     </div>);
 };
-export default Trending;
+export default Reviews;
