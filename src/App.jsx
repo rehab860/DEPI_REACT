@@ -34,7 +34,7 @@ function AppContent() {
         document.addEventListener('click', handleGlobalClick, true);
         return () => document.removeEventListener('click', handleGlobalClick, true);
     }, [navigate, location.pathname]);
-    
+
     // Dynamically map pathname to Navbar activeTab highlight
     const getActiveTab = () => {
         const path = location.pathname;
@@ -60,6 +60,10 @@ function AppContent() {
             navigate('/submit-review');
         if (tab === 'profile')
             navigate('/profile');
+        if (tab === 'login')
+            navigate('/login');
+        if (tab === 'signup')
+            navigate('/signup');
     };
     const handleSearch = (query) => {
         if (query.trim()) {
@@ -76,7 +80,8 @@ function AppContent() {
     const handleProfileClick = () => {
         navigate('/profile');
     };
-    const isLoginPage = location.pathname === '/login';
+    const isLoginPage = location.pathname === '/login' || location.pathname === '/signup';
+
 
 
     return (
@@ -96,7 +101,7 @@ function App() {
         <AuthProvider>
             <CompaniesProvider>
                 <BrowserRouter>
-                    <AppContent/>
+                    <AppContent />
                 </BrowserRouter>
             </CompaniesProvider>
         </AuthProvider>
