@@ -65,6 +65,11 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
               Submit Review
             </a>
           </li>
+          <li className="nav-item">
+            <a className={`nav-link px-3 ${activeTab === 'qa' ? 'text-teal active fw-bold' : 'text-dark'}`} href="#qa" onClick={(e) => handleTabClick('qa', e)}>
+              Interview Q&A
+            </a>
+          </li>
         </ul>
 
         {/* Search Box in Middle */}
@@ -93,7 +98,9 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
                 {/* Profile Dropdown */}
                 <div className="position-relative">
                   <button className="btn d-flex align-items-center gap-2 border-0 p-1" type="button" onClick={handleProfileDropdownToggle} aria-expanded={isProfileDropdownOpen}>
-                    <img src={user.avatar} alt={user.name} className="rounded-circle border" width="36" height="36" style={{ objectFit: 'cover' }} />
+                    <div className="rounded-circle border d-flex align-items-center justify-content-center fw-bold text-white" style={{ width: 36, height: 36, background: '#9ca3af', fontSize: '1rem' }}>
+                      {user.name?.charAt(0).toUpperCase()}
+                    </div>
                     <span className="d-none d-md-inline fw-semibold text-dark fs-7">{user.name}</span>
                     <i className={`bi bi-chevron-${isProfileDropdownOpen ? 'up' : 'down'} text-muted small`}></i>
                   </button>
@@ -136,7 +143,7 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
               //   Log In
               // </button>
               <div className="d-flex align-items-center gap-2">
-                <button type="button" onClick={() => onTabChange('login')} className="btn btn-outline-teal rounded-pill btn-sm">
+                <button type="button" onClick={() => onTabChange('login')} className="btn btn-secondary-custom rounded-pill btn-sm">
                   Log In
                 </button>
                 <button type="button" onClick={() => onTabChange('signup')} className="btn btn-primary-teal rounded-pill btn-sm">

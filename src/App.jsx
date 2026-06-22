@@ -1,19 +1,38 @@
 import { useEffect, useContext } from 'react';
+import { BrowserRouter, useNavigate, useLocation, useSearchParams, Routes, Route, Navigate, Outlet } from 'react-router-dom';
+// context
 import AuthContext, { AuthProvider } from './context/AuthContext';
 import CompaniesContext, { CompaniesProvider } from './context/CompaniesContext';
-
-import { BrowserRouter, useNavigate, useLocation, useSearchParams } from 'react-router-dom';
-
+// components
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
-import { AppRouter } from './routes/AppRouter';
+// Pages
+import Home from './pages/Home';
+import Trending from './pages/Trending';
+import Search from './pages/Search';
+import CompanyProfile from './pages/CompanyProfile';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
+import SubmitReview from './pages/SubmitReview';
+import UserProfile from './pages/UserProfile';
+import SavedCompanies from './pages/SavedCompanies';
+import Notifications from './pages/Notifications';
+import InterviewQA from './pages/InterviewQA';
+import NotFound from './pages/NotFound';
+
+// Protected Route Guard Layout
+const ProtectedRoute = () => {
+    const { auth, login, logout, updateProfile } = useContext(AuthContext);
+    const user = auth?.user;
+    const isLoggedIn = auth.isLoggedIn;
+    return isLoggedIn ? <Outlet /> : <Navigate to="/login" replace />;
+};
 
 function AppContent() {
     const navigate = useNavigate();
     const { auth, login, logout, updateProfile } = useContext(AuthContext);
     const user = auth?.user;
     const location = useLocation();
-
     const [searchParams] = useSearchParams();
 
     // Extract search query from search params (?q=...)
@@ -48,6 +67,8 @@ function AppContent() {
             return 'profile';
         if (path.startsWith('/company/'))
             return 'company';
+        if (path === '/qa')
+            return 'qa';
         return 'home';
     };
     const activeTab = getActiveTab();
@@ -64,6 +85,8 @@ function AppContent() {
             navigate('/login');
         if (tab === 'signup')
             navigate('/signup');
+        if (tab === 'qa')
+            navigate('/qa');
     };
     const handleSearch = (query) => {
         if (query.trim()) {
@@ -89,7 +112,27 @@ function AppContent() {
             {/* Hide navbar and footer on Login page*/}
             {!isLoginPage && (<Navbar activeTab={activeTab} user={auth?.user} onTabChange={handleTabChange} onSearch={handleSearch} searchQuery={searchQuery} onSignOut={handleSignOut} onProfileClick={handleProfileClick} />)}
             <main className="flex-shrink-0">
-                <AppRouter />
+                <Routes>
+                    {/* Public Routes */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/trending" element={<Trending />} />
+                    <Route path="/search" element={<Search />} />
+                    <Route path="/company/:name" element={<CompanyProfile />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+
+                    {/* Protected Routes , only if user is logged in*/}
+                    <Route element={<ProtectedRoute />}>
+                        <Route path="/submit-review" element={<SubmitReview />} />
+                        <Route path="/profile" element={<UserProfile />} />
+                        <Route path="/saved-companies" element={<SavedCompanies />} />
+                        <Route path="/notifications" element={<Notifications />} />
+                        <Route path="/qa" element={<InterviewQA />} />
+                    </Route>
+
+                    {/* not match component */}
+                    <Route path="*" element={<NotFound />} />
+                </Routes>
             </main>
             {!isLoginPage && <Footer />}
         </div>
