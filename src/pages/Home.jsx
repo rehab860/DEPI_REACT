@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import CompaniesContext from '../context/CompaniesContext';
+import { useTheme } from '../context/ThemeContext';
 
 import { useNavigate } from 'react-router-dom';
 import { StarRating } from '../components/StarRating';
@@ -75,6 +76,7 @@ const INITIAL_MOCK_REVIEWS = [
 
 
 export const Home = () => {
+  const { isDark } = useTheme();
   const { companies, setFilters, resetFilters } = useContext(CompaniesContext);
   const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
@@ -145,35 +147,34 @@ export const Home = () => {
   return (
     <div className="animate-fade-in">
       {/* Hero section */}
-      <section className="section-white d-flex align-items-center" style={{ backgroundImage: 'url(/hero-bg.jpg)', backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '90vh' }}>
-        <div className="container ">
-          <div className="row align-items-center justify-content-between gy-5">
-            <div className="col-12 col-lg-6">
-              <h1 className="display-4 fw-bold mb-3" style={{ lineHeight: '1.2' , fontFamily: "'Sora', sans-serif"}}>
-                Find the <span className="text-teal text-gradient" style={{
-  fontFamily: '"Playfair Display", serif',
-  fontStyle: 'italic',
-  fontWeight: 700,
-}}>Real Truth</span> about Tech Careers
-              </h1>
-              <p className="lead text-muted mb-4" style={{ lineHeight: '1.7' }}>
-                Explore interview difficulty levels, realistic job reviews, pros, and cons. Written by engineers, for engineers.
-              </p>
-              <div className="d-flex flex-wrap gap-3">
-                <button onClick={() => navigate('/reviews')} className="btn btn-primary-teal rounded-pill d-inline-flex align-items-center gap-2">
-                  <i className="bi bi-fire"></i> Browse Reviews
-                </button>
-                <button onClick={() => navigate('/submit-review')} className="btn btn-secondary-custom rounded-pill">
-                  Submit a Review
-                </button>
-              </div>
+      <section className="section-white d-flex align-items-center" style={{ backgroundImage: `url(${isDark ? '/hero-bg-dark.jpg' : '/hero-bg.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '90vh' }}>        <div className="container ">
+        <div className="row align-items-center justify-content-between gy-5">
+          <div className="col-12 col-lg-6">
+            <h1 className="display-4 fw-bold mb-3" style={{ lineHeight: '1.2', fontFamily: "'Sora', sans-serif" }}>
+              Find the <span className="text-teal text-gradient" style={{
+                fontFamily: '"Playfair Display", serif',
+                fontStyle: 'italic',
+                fontWeight: 700,
+              }}>Real Truth</span> about Tech Careers
+            </h1>
+            <p className="lead text-muted mb-4" style={{ lineHeight: '1.7' }}>
+              Explore interview difficulty levels, realistic job reviews, pros, and cons. Written by engineers, for engineers.
+            </p>
+            <div className="d-flex flex-wrap gap-3">
+              <button onClick={() => navigate('/reviews')} className="btn btn-primary-teal rounded-pill d-inline-flex align-items-center gap-2">
+                <i className="bi bi-fire"></i> Browse Reviews
+              </button>
+              <button onClick={() => navigate('/submit-review')} className="btn btn-secondary-custom rounded-pill">
+                Submit a Review
+              </button>
             </div>
           </div>
         </div>
+      </div>
       </section>
 
       {/* Section 2: Company Directory */}
-      <section className="section-light-teal">
+      <section className="section-light-teal" id="companies">
         <div className="container">
           <h2 className="fw-bold mb-1">Company Directory</h2>
           <p className="text-muted small mb-4">Click a company to view aggregate stats and filtered reviews</p>

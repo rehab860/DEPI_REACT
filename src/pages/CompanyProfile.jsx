@@ -19,7 +19,7 @@ export const CompanyProfile = () => {
     }, []);
     const companyName = name || '';
     const handleBack = () => {
-        navigate('/reviews');
+         navigate('/#companies')
     };
     const handleWriteReview = (comp) => {
         navigate('/submit-review', { state: { prefilledCompany: comp } });

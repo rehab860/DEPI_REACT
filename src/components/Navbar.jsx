@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
+
 export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, searchQuery, user, onSignOut, onProfileClick, }) => {
+  const { isDark, toggleTheme } = useTheme();
+
   const navigate = useNavigate();
   const [isNavCollapsed, setIsNavCollapsed] = useState(true);
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [hasUnreadNotifications, setHasUnreadNotifications] = useState(true);
   const [localSearch, setLocalSearch] = useState(searchQuery);
+
   useEffect(() => {
     setLocalSearch(searchQuery);
   }, [searchQuery]);
@@ -73,7 +78,7 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
         </ul>
 
         {/* Search Box in Middle */}
-        <form className="d-flex mx-auto col-12 col-lg-5 my-2 my-lg-0 px-2" onSubmit={handleSearchSubmit}>
+        <form className="d-flex mx-auto col-12 col-lg-3 my-2 my-lg-0 px-2" onSubmit={handleSearchSubmit}>
           <div className="input-group">
             <span className="input-group-text bg-light border-0 rounded-start-pill">
               <i className="bi bi-search text-muted"></i>
@@ -87,6 +92,10 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
           {user ?
             (
               <>
+                {/* toggle theme icon */}
+                <button type="button" onClick={toggleTheme} className="btn border-0 bg-transparent p-2 text-dark" aria-label="Toggle theme">
+                  <i className={`bi ${isDark ? 'bi-sun' : 'bi-moon'} fs-5`}></i>
+                </button>
                 {/* Notification Bell */}
                 <button type="button" className="btn position-relative p-2 text-dark bg-transparent border-0" onClick={handleNotificationClick} aria-label="Notifications">
                   <i className="bi bi-bell fs-5"></i>

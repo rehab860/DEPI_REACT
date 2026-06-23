@@ -3,6 +3,7 @@ import { BrowserRouter, useNavigate, useLocation, useSearchParams, Routes, Route
 // context
 import AuthContext, { AuthProvider } from './context/AuthContext';
 import CompaniesContext, { CompaniesProvider } from './context/CompaniesContext';
+import { ThemeProvider } from './context/ThemeContext';
 // components
 import { Navbar } from './components/Navbar';
 import { Footer } from './components/Footer';
@@ -141,13 +142,15 @@ function AppContent() {
 
 function App() {
     return (
-        <AuthProvider>
-            <CompaniesProvider>
-                <BrowserRouter>
-                    <AppContent />
-                </BrowserRouter>
-            </CompaniesProvider>
-        </AuthProvider>
+        <ThemeProvider>
+            <AuthProvider>
+                <CompaniesProvider>
+                    <BrowserRouter>
+                        <AppContent />
+                    </BrowserRouter>
+                </CompaniesProvider>
+            </AuthProvider>
+        </ThemeProvider>
     );
 }
 export default App;
