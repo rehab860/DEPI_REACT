@@ -99,7 +99,7 @@ function AppContent() {
     };
     const handleSignOut = () => {
         logout();
-        navigate('/login');
+        navigate('/');
     };
     const handleProfileClick = () => {
         navigate('/profile');
