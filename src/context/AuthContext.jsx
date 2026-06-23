@@ -1,4 +1,12 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import { auth } from '../firebase/config';
+import { 
+  signInWithEmailAndPassword, 
+  createUserWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged,
+  updateProfile as firebaseUpdateProfile 
+} from 'firebase/auth';
 
 const AuthContext = createContext();
 
@@ -7,72 +15,105 @@ const loadAuthState = () => {
     const storedAuth = localStorage.getItem('reevue_auth_v1');
     if (storedAuth) {
       const parsed = JSON.parse(storedAuth);
-      return {
-        user: parsed.user || null,
-        token: parsed.token || null,
-        isLoggedIn: !!parsed.user,
-      };
+      return parsed.user || null;
     }
   } catch (err) {
     console.error('Failed to parse auth state', err);
   }
-  return { user: null, token: null, isLoggedIn: false };
-};
-
-const authReducer = (state, action) => {
-  switch (action.type) {
-    case 'LOGIN': {
-      const newState = {
-        ...state,
-        user: action.payload.user,
-        token: action.payload.token,
-        isLoggedIn: true,
-      };
-      localStorage.setItem('reevue_auth_v1', JSON.stringify({
-        user: newState.user,
-        token: newState.token,
-      }));
-      return newState;
-    }
-    case 'LOGOUT': {
-      localStorage.removeItem('reevue_auth_v1');
-      return {
-        ...state,
-        user: null,
-        token: null,
-        isLoggedIn: false,
-      };
-    }
-    case 'UPDATE_PROFILE': {
-      if (!state.user) return state;
-      const newState = {
-        ...state,
-        user: {
-          ...state.user,
-          ...action.payload,
-        },
-      };
-      localStorage.setItem('reevue_auth_v1', JSON.stringify({
-        user: newState.user,
-        token: newState.token,
-      }));
-      return newState;
-    }
-    default:
-      return state;
-  }
+  return null;
 };
 
 export const AuthProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(authReducer, undefined, loadAuthState);
+  const [user, setUser] = useState(loadAuthState);
+  const [loading, setLoading] = useState(true);
 
-  const login = (payload) => dispatch({ type: 'LOGIN', payload });
-  const logout = () => dispatch({ type: 'LOGOUT' });
-  const updateProfile = (payload) => dispatch({ type: 'UPDATE_PROFILE', payload });
+  // Monitor user state automatically
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      if (currentUser) {
+        const formattedUser = {
+          name: currentUser.displayName || currentUser.email.split('@')[0],
+          email: currentUser.email,
+          bio: 'Firebase authenticated user.',
+          uid: currentUser.uid,
+        };
+        setUser(formattedUser);
+        localStorage.setItem('reevue_auth_v1', JSON.stringify({ user: formattedUser }));
+      } else {
+        // Only clear if we were logged in via Firebase
+        setUser((prev) => {
+          if (prev && prev.uid) {
+            localStorage.removeItem('reevue_auth_v1');
+            return null;
+          }
+          return prev;
+        });
+      }
+      setLoading(false);
+    });
+    return unsubscribe; // clean up on unmount
+  }, []);
+
+  // Login handler
+  const loginUser = (email, password) => {
+    if (typeof email === 'object' && email !== null) {
+      const payload = email;
+      setUser(payload.user);
+      localStorage.setItem('reevue_auth_v1', JSON.stringify({ user: payload.user }));
+      return Promise.resolve(payload.user);
+    }
+    return signInWithEmailAndPassword(auth, email, password);
+  };
+
+  // Sign up handler
+  const signUpUser = async (email, password, displayName) => {
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    // Add display name to profile
+    await firebaseUpdateProfile(userCredential.user, { displayName });
+    return userCredential.user;
+  };
+
+  // Logout handler
+  const logoutUser = () => {
+    localStorage.removeItem('reevue_auth_v1');
+    setUser(null);
+    return signOut(auth);
+  };
+
+  // Profile update handler
+  const updateProfileUser = async (payload) => {
+    setUser((prev) => {
+      if (!prev) return null;
+      const updated = { ...prev, ...payload };
+      localStorage.setItem('reevue_auth_v1', JSON.stringify({ user: updated }));
+      return updated;
+    });
+
+    if (auth.currentUser) {
+      if (payload.name) {
+        await firebaseUpdateProfile(auth.currentUser, { displayName: payload.name });
+      }
+    }
+  };
+
+  const authState = {
+    user,
+    isLoggedIn: !!user,
+  };
+
+  const value = {
+    auth: authState,
+    user,
+    isLoggedIn: !!user,
+    login: loginUser,
+    signup: signUpUser,
+    logout: logoutUser,
+    updateProfile: updateProfileUser,
+  };
 
   return (
-    <AuthContext.Provider value={{ auth: state, login, logout, updateProfile }}>
-      {children}
+    <AuthContext.Provider value={value}>
+      {!loading && children}
     </AuthContext.Provider>
   );
 };

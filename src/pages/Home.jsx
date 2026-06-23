@@ -6,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { StarRating } from '../components/StarRating';
 import { ReviewCard } from '../components/ReviewCard';
 
+import { db } from '../firebase/config';
+import { collection, getDocs, orderBy, query } from 'firebase/firestore';
+
 const INITIAL_MOCK_REVIEWS = [
   {
     id: 'rev-1',
@@ -82,21 +85,22 @@ export const Home = () => {
   const [reviews, setReviews] = useState([]);
 
   useEffect(() => {
-    const stored = localStorage.getItem('reevue_reviews_v1'); //بيشوف هل فيه ريففيوز متخزنة ولا لا
-    if (stored) {
-      try {
-        setReviews(JSON.parse(stored));
-      }
-      catch (err) {
-        setReviews(INITIAL_MOCK_REVIEWS);
-      }
-    }
-    else {
-      setReviews(INITIAL_MOCK_REVIEWS);
-      localStorage.setItem('reevue_reviews_v1', JSON.stringify(INITIAL_MOCK_REVIEWS));
-    }
+  const fetchReviews = async () => {
+    const reviewsRef = collection(db, 'reviews');
+    // Sort reviews by date/timestamp
+    const q = query(reviewsRef, orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(q);
+    
+    const reviewsList = [];
+    querySnapshot.forEach((doc) => {
+      reviewsList.push({ id: doc.id, ...doc.data() });
+    });
+    
+    setReviews(reviewsList);
+  };
+  
+       fetchReviews();
   }, []);
-
   // Calculate summaries dynamically
   const getCompanySummaries = () => {
     const summariesMap = {};

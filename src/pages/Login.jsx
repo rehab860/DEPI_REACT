@@ -26,23 +26,17 @@ const Login = () => {
         return Object.keys(newErrors).length === 0;
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         if (!validate()) return;
 
-        const mockUser = {
-            name: email.split('@')[0],
-            email: email.trim().toLowerCase(),
-            bio: 'CS student. Curious about candidate experience metrics, system designs, and loops.',
-            reviewsWritten: [],
-        };
-
-        login({
-            user: mockUser,
-            token: 'mock-jwt-session-token-v1',
-        });
-
-        navigate('/');
+        try {
+            await login(email.trim().toLowerCase(), password);
+            navigate('/');
+        } catch (error) {
+            console.error('Login failed:', error);
+            alert(error.message || 'Invalid email or password.');
+        }
     };
 
     return (

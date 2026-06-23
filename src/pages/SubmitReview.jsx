@@ -5,6 +5,10 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { StarRating } from '../components/StarRating';
 import { ReviewCard } from '../components/ReviewCard';
+
+import { db } from '../firebase/config';
+import { collection, addDoc, serverTimestamp, doc, getDoc, updateDoc } from 'firebase/firestore';
+
 export const SubmitReview = () => {
     const navigate = useNavigate();
   const { auth, login, logout, updateProfile } = useContext(AuthContext);
@@ -31,39 +35,39 @@ export const SubmitReview = () => {
     // Load editing review or saved draft on mount
     useEffect(() => {
         if (editingReviewId) {
-            try {
-                const stored = localStorage.getItem('reevue_reviews_v1');
-                if (stored) {
-                    const list = JSON.parse(stored);
-                    const editTarget = list.find((r) => r.id === editingReviewId);
-                    if (editTarget) {
-                        setCompanyName(editTarget.companyName);
-                        setIndustry('Software / Internet'); // fallback default
-                        // Extract job title and employment type
-                        let title = editTarget.jobTitle;
+            const fetchEditTarget = async () => {
+                try {
+                    const docRef = doc(db, 'reviews', editingReviewId);
+                    const docSnap = await getDoc(docRef);
+                    if (docSnap.exists()) {
+                        const editTarget = docSnap.data();
+                        setCompanyName(editTarget.companyName || '');
+                        setIndustry(editTarget.industry || 'Software / Internet');
+                        let title = editTarget.jobTitle || '';
                         let status = 'Full-time';
-                        if (editTarget.jobTitle.includes(' (')) {
-                            const parts = editTarget.jobTitle.split(' (');
+                        if (title.includes(' (')) {
+                            const parts = title.split(' (');
                             title = parts[0];
                             status = parts[1].replace(')', '');
                         }
                         setJobTitle(title);
                         setEmploymentStatus(status);
-                        setCity('San Francisco'); // fallback default
-                        setPros(editTarget.pros);
-                        setCons(editTarget.cons);
-                        setRating(editTarget.rating);
-                        setDifficulty(editTarget.difficulty);
-                        setRecommend(editTarget.recommend);
+                        setCity(editTarget.city || 'San Francisco');
+                        setPros(editTarget.pros || '');
+                        setCons(editTarget.cons || '');
+                        setRating(editTarget.rating || 0);
+                        setDifficulty(editTarget.difficulty || 'Medium');
+                        setRecommend(editTarget.recommend !== undefined ? editTarget.recommend : true);
                         setIsAnonymous(editTarget.isAnonymous !== undefined ? editTarget.isAnonymous : true);
                         setStep(1);
-                        return; // skip draft since editing
                     }
                 }
-            }
-            catch (err) {
-                console.error('Failed to load editing review target', err);
-            }
+                catch (err) {
+                    console.error('Failed to load editing review target from Firestore', err);
+                }
+            };
+            fetchEditTarget();
+            return; // skip draft since editing
         }
         // Otherwise, load draft
         try {
@@ -182,67 +186,43 @@ export const SubmitReview = () => {
         if (targetStep === 5 && isStep1Valid() && isStep2Valid() && isStep3Valid() && isStep4Valid())
             setStep(5);
     };
-    const handleSubmit = () => {
-        if (!isStep1Valid() || !isStep2Valid() || !isStep3Valid() || !isStep4Valid()) {
-            alert('Please complete all form fields before submitting.');
-            return;
-        }
-        const todayStr = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-        });
-        try {
-            const stored = localStorage.getItem('reevue_reviews_v1');
-            let currentList = [];
-            if (stored) {
-                currentList = JSON.parse(stored);
-            }
-            if (editingReviewId) {
-                // Edit and update review in place
-                const updatedList = currentList.map((r) => {
-                    if (r.id === editingReviewId) {
-                        return {
-                            ...r,
-                            companyName: companyName.trim(),
-                            jobTitle: `${jobTitle} (${employmentStatus})`,
-                            rating,
-                            difficulty,
-                            recommend,
-                            pros: pros.trim(),
-                            cons: cons.trim(),
-                            isAnonymous,
-                        };
-                    }
-                    return r;
-                });
-                localStorage.setItem('reevue_reviews_v1', JSON.stringify(updatedList));
-            }
-            else {
-                // Add new review
-                const newReview = {
-                    id: 'rev-' + Date.now(),
-                    authorEmail: auth.user?.email || 'anonymous@reevue.edu',
-                    companyName: companyName.trim(),
-                    jobTitle: `${jobTitle} (${employmentStatus})`,
-                    date: todayStr,
-                    rating,
-                    difficulty,
-                    recommend,
-                    pros: pros.trim(),
-                    cons: cons.trim(),
-                    isAnonymous,
-                    helpfulCount: 0,
-                };
-                localStorage.setItem('reevue_reviews_v1', JSON.stringify([newReview, ...currentList]));
-            }
-            localStorage.removeItem('reevue_review_draft'); // clear draft
-            navigate('/reviews');
-        }
-        catch (err) {
-            console.error('Failed to submit review', err);
-        }
+  const handleSubmit = async () => {
+    if (!isStep1Valid() || !isStep2Valid() || !isStep3Valid() || !isStep4Valid()) {
+        alert('Please complete all form fields before submitting.');
+        return;
+    }
+    const newReview = {
+      companyName: companyName.trim(),
+      industry: industry.trim(),
+      jobTitle: `${jobTitle} (${employmentStatus})`,
+      city: city.trim(),
+      rating,
+      difficulty,
+      recommend,
+      pros: pros.trim(),
+      cons: cons.trim(),
+      isAnonymous,
+      authorEmail: user?.email || 'anonymous@reevue.edu',
     };
+    try {
+      if (editingReviewId) {
+        // Update in Firestore
+        const docRef = doc(db, 'reviews', editingReviewId);
+        await updateDoc(docRef, newReview);
+      } else {
+        // Add to Firebase Firestore
+        await addDoc(collection(db, 'reviews'), {
+          ...newReview,
+          createdAt: serverTimestamp(),
+          helpfulCount: 0,
+        });
+      }
+      localStorage.removeItem('reevue_review_draft'); // clear draft
+      navigate('/reviews');
+    } catch (error) {
+      console.error("Error submitting review to Firestore: ", error);
+    }
+  };
     const renderStepProgressBar = () => {
         return (<div className="d-flex justify-content-between align-items-center mb-5 position-relative">
         <div className="position-absolute bg-light-teal-bg" style={{ height: '4px', left: '10%', right: '10%', top: '50%', transform: 'translateY(-50%)', backgroundColor: '#e9ecef', zIndex: 0 }}></div>

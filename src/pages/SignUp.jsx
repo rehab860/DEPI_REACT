@@ -5,7 +5,7 @@ import AuthContext from '../context/AuthContext';
 
 const SignUp = () => {
     const navigate = useNavigate();
-    const { login } = useContext(AuthContext);
+    const { signup } = useContext(AuthContext);
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -38,7 +38,7 @@ const SignUp = () => {
 
     const strength = getStrength(password);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const newErrors = {};
         if (!firstName.trim()) newErrors.firstName = 'Please enter your first name.';
@@ -54,22 +54,14 @@ const SignUp = () => {
         setErrors(newErrors);
         if (Object.keys(newErrors).length > 0) return;
 
-        const newUser = {
-            name: `${firstName.trim()} ${lastName.trim()}`,
-            firstName: firstName.trim(),
-            lastName: lastName.trim(),
-            email: email.trim().toLowerCase(),
-            phone: phone.trim(),
-            bio: bio.trim(),
-            reviewsWritten: [],
-        };
-
-        login({
-            user: newUser,
-            token: 'mock-jwt-session-token-v1',
-        });
-
-        navigate('/');
+        try {
+            const displayName = `${firstName.trim()} ${lastName.trim()}`;
+            await signup(email.trim().toLowerCase(), password, displayName);
+            navigate('/');
+        } catch (error) {
+            console.error('Sign up failed:', error);
+            alert(error.message || 'Failed to create account. Please try again.');
+        }
     };
 
     return (
