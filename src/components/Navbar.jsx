@@ -89,13 +89,13 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
 
         {/* User Controls (Notification + Profile) */}
         <div className="d-flex align-items-center justify-content-end gap-3 ms-auto mt-2 mt-lg-0">
+          {/* toggle theme icon */}
+          <button type="button" onClick={toggleTheme} className="btn border-0 bg-transparent p-2 text-dark" aria-label="Toggle theme">
+            <i className={`bi ${isDark ? 'bi-sun' : 'bi-moon'} fs-5`}></i>
+          </button>
           {user ?
             (
               <>
-                {/* toggle theme icon */}
-                <button type="button" onClick={toggleTheme} className="btn border-0 bg-transparent p-2 text-dark" aria-label="Toggle theme">
-                  <i className={`bi ${isDark ? 'bi-sun' : 'bi-moon'} fs-5`}></i>
-                </button>
                 {/* Notification Bell */}
                 <button type="button" className="btn position-relative p-2 text-dark bg-transparent border-0" onClick={handleNotificationClick} aria-label="Notifications">
                   <i className="bi bi-bell fs-5"></i>
