@@ -96,14 +96,6 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
           {user ?
             (
               <>
-                {/* Notification Bell */}
-                <button type="button" className="btn position-relative p-2 text-dark bg-transparent border-0" onClick={handleNotificationClick} aria-label="Notifications">
-                  <i className="bi bi-bell fs-5"></i>
-                  {hasUnreadNotifications && (<span className="position-absolute top-1 start-50 translate-middle-x p-1 bg-danger border border-light rounded-circle">
-                    <span className="visually-hidden">New alerts</span>
-                  </span>)}
-                </button>
-
                 {/* Profile Dropdown */}
                 <div className="position-relative">
                   <button className="btn d-flex align-items-center gap-2 border-0 p-1" type="button" onClick={handleProfileDropdownToggle} aria-expanded={isProfileDropdownOpen}>
