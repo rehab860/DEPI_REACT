@@ -28,15 +28,18 @@ export const StarRating = ({ rating, mode, size = 'md', onChange, }) => {
         }
     };
     const fontSizeClass = getFontSizeClass();
-    return (<div className="d-inline-flex align-items-center gap-1">
-      {[1, 2, 3, 4, 5].map((index) => {
-            const isFilled = index <= (hoverRating || rating);
-            return (<button key={index} type="button" className={`btn p-0 bg-transparent border-0 d-inline-flex align-items-center justify-content-center ${mode === 'interactive' ? 'cursor-pointer' : 'pe-none'}`} onClick={() => handleClick(index)} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave} disabled={mode === 'display'} style={{ outline: 'none' }} aria-label={mode === 'interactive' ? `Rate ${index} out of 5 stars` : undefined}>
-            <i className={`bi bi-star-fill ${fontSizeClass} ${isFilled ? 'star-filled text-teal' : 'star-empty text-black-50'}`} style={{
-                    transition: 'color 0.15s ease',
-                }}></i>
-          </button>);
-        })}
-    </div>);
+    return (
+        <div className="d-inline-flex align-items-center gap-1">
+            {[1, 2, 3, 4, 5].map((index) => {
+                const isFilled = index <= (hoverRating || rating);
+                return (
+                    <button key={index} type="button" className={`btn p-0 bg-transparent border-0 d-inline-flex align-items-center justify-content-center ${mode === 'interactive' ? 'cursor-pointer' : 'pe-none'}`} onClick={() => handleClick(index)} onMouseEnter={() => handleMouseEnter(index)} onMouseLeave={handleMouseLeave} disabled={mode === 'display'} style={{ outline: 'none' }} aria-label={mode === 'interactive' ? `Rate ${index} out of 5 stars` : undefined}>
+                        <i className={`bi bi-star-fill ${fontSizeClass} ${isFilled ? 'star-filled text-teal' : 'star-empty text-black-50'}`}
+                            style={{ transition: 'color 0.15s ease', }}></i>
+                    </button>
+                );
+            })}
+        </div>
+    );
 };
 export default StarRating;

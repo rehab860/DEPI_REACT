@@ -176,7 +176,12 @@ export const UserProfile = () => {
             </div>)}
 
             {activeSubTab === 'saved' && (<div className="animate-fade-in">
-              <h5 className="fw-bold mb-3">Bookmarked Companies</h5>
+              <div className="d-flex justify-content-between align-items-end mb-3">
+                <h5 className="fw-bold mb-3">Bookmarked Companies</h5>
+                <button type="button" onClick={() => navigate('/saved-companies')} className="btn btn-tertiary-custom btn-sm">
+                  View all saved
+                </button>
+              </div>
               <div className="row g-3">
                 {mockSavedCompanies.map((c) => (<div className="col-12 col-md-6" key={c.name}>
                   <div onClick={() => navigate(`/company/${c.name}`)} className="p-3 bg-light rounded-3 h-100 cursor-pointer hover-overlay card-custom shadow-none border-0" style={{ cursor: 'pointer' }}>
