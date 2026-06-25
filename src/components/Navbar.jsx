@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 
-export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, searchQuery, user, onSignOut, onProfileClick, }) => {
+export const Navbar = ({ appName = 'ReeVue',
+   activeTab, 
+   onTabChange, 
+   onSearch, 
+   searchQuery, 
+   user, 
+   onSignOut, 
+   onProfileClick, }) => {
   const { isDark, toggleTheme } = useTheme();
 
   const navigate = useNavigate();
@@ -17,6 +24,7 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
   const handleNavToggle = () => {
     setIsNavCollapsed(!isNavCollapsed);
   };
+
   const handleProfileDropdownToggle = () => {
     setIsProfileDropdownOpen(!isProfileDropdownOpen);
   };
@@ -40,20 +48,18 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
   };
   return (<nav className="navbar navbar-expand-lg navbar-light sticky-top bg-white border-bottom shadow-sm py-2">
     <div className="container">
-      {/* Brand/Logo */}
+
       <a className="logo-container me-3" href="#home" onClick={(e) => handleTabClick('home', e)}>
         <i className="bi bi-eye-fill text-teal fs-3"></i>
         <span className="logo-text fw-bold">{appName}</span>
       </a>
 
-      {/* Mobile Toggler */}
       <button className="navbar-toggler border-0" type="button" aria-expanded={!isNavCollapsed} aria-label="Toggle navigation" onClick={handleNavToggle}>
         <span className="navbar-toggler-icon"></span>
       </button>
 
-      {/* Navbar Items */}
       <div className={`collapse navbar-collapse ${isNavCollapsed ? '' : 'show'}`} id="navbarContent">
-        {/* Menu links */}
+
         <ul className="navbar-nav me-auto mb-2 mb-lg-0 fw-semibold">
           <li className="nav-item">
             <a className={`nav-link px-3 ${activeTab === 'home' ? 'text-teal active fw-bold' : 'text-dark'}`} href="#home" onClick={(e) => handleTabClick('home', e)}>
@@ -77,7 +83,6 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
           </li>
         </ul>
 
-        {/* Search Box in Middle */}
         <form className="d-flex mx-auto col-12 col-lg-3 my-2 my-lg-0 px-2" onSubmit={handleSearchSubmit}>
           <div className="input-group">
             <span className="input-group-text bg-light border-0 rounded-start-pill">
@@ -87,16 +92,13 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
           </div>
         </form>
 
-        {/* User Controls (Notification + Profile) */}
         <div className="d-flex align-items-center justify-content-end gap-3 ms-auto mt-2 mt-lg-0">
-          {/* toggle theme icon */}
           <button type="button" onClick={toggleTheme} className="btn border-0 bg-transparent p-2 text-dark" aria-label="Toggle theme">
             <i className={`bi ${isDark ? 'bi-sun' : 'bi-moon'} fs-5`}></i>
           </button>
           {user ?
             (
               <>
-                {/* Profile Dropdown */}
                 <div className="position-relative">
                   <button className="btn d-flex align-items-center gap-2 border-0 p-1" type="button" onClick={handleProfileDropdownToggle} aria-expanded={isProfileDropdownOpen}>
                     <div className="rounded-circle border d-flex align-items-center justify-content-center fw-bold text-white" style={{ width: 36, height: 36, background: '#9ca3af', fontSize: '1rem' }}>
@@ -140,9 +142,7 @@ export const Navbar = ({ appName = 'ReeVue', activeTab, onTabChange, onSearch, s
                 </div>
               </>
             ) : (
-              // <button type="button" onClick={() => onTabChange('home')} className="btn btn-primary-teal rounded-pill btn-sm">
-              //   Log In
-              // </button>
+              
               <div className="d-flex align-items-center gap-2">
                 <button type="button" onClick={() => onTabChange('login')} className="btn btn-secondary-custom rounded-pill btn-sm">
                   Log In

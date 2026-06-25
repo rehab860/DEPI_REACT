@@ -1,4 +1,4 @@
-import React, { useState, useEffect , useContext} from 'react';
+import  { useState, useEffect , useContext} from 'react';
 import AuthContext from '../context/AuthContext';
 
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -14,7 +14,7 @@ export const Reviews = () => {
     const [selectedDifficulty, setSelectedDifficulty] = useState('All');
     const [selectedSort, setSelectedSort] = useState('Helpful');
     const [searchQuery, setSearchQuery] = useState('');
-    // Sync search query from URL parameter if present (?q=...)
+
     useEffect(() => {
         const query = searchParams.get('q');
         if (query) {
@@ -24,7 +24,7 @@ export const Reviews = () => {
             setSearchQuery('');
         }
     }, [searchParams]);
-    // Load reviews list
+
     useEffect(() => {
         const stored = localStorage.getItem('reevue_reviews_v1');
         if (stored) {
@@ -36,6 +36,7 @@ export const Reviews = () => {
             }
         }
     }, []);
+
     const handleDeleteReview = (id) => {
         if (window.confirm('Are you sure you want to delete this review?')) {
             const updated = reviews.filter((r) => r.id !== id);
@@ -43,16 +44,16 @@ export const Reviews = () => {
             localStorage.setItem('reevue_reviews_v1', JSON.stringify(updated));
         }
     };
+    
     const handleEditReview = (id) => {
         navigate('/submit-review', { state: { editingReviewId: id } });
     };
     const handleCompanyClick = (companyName) => {
         navigate(`/company/${companyName}`);
     };
-    // Filter and sort reviews
+
     const getFilteredAndSortedReviews = () => {
         let result = [...reviews];
-        // Search query filter
         if (searchQuery.trim()) {
             const q = searchQuery.toLowerCase();
             result = result.filter((r) => r.companyName.toLowerCase().includes(q) ||
@@ -60,11 +61,9 @@ export const Reviews = () => {
                 r.pros.toLowerCase().includes(q) ||
                 r.cons.toLowerCase().includes(q));
         }
-        // Difficulty filter
         if (selectedDifficulty !== 'All') {
             result = result.filter((r) => r.difficulty === selectedDifficulty);
         }
-        // Sorting
         if (selectedSort === 'Helpful') {
             result.sort((a, b) => (b.helpfulCount || 0) - (a.helpfulCount || 0));
         }
@@ -80,7 +79,6 @@ export const Reviews = () => {
     return (<div className="animate-fade-in section-light-teal py-4 min-vh-75">
       <div className="container">
         
-        {/* Header toolbar */}
         <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
           <div>
             <h2 className="fw-bold mb-1">Browse Reviews</h2>
@@ -92,7 +90,6 @@ export const Reviews = () => {
           </button>
         </div>
 
-        {/* Clear Search Indicator */}
         {searchQuery && (<div className="alert bg-white border-0 d-flex justify-content-between align-items-center mb-4 rounded-3 shadow-sm px-4 animate-fade-in">
             <div className="small">
               Showing reviews matching: <strong className="text-teal">"{searchQuery}"</strong>
@@ -102,7 +99,6 @@ export const Reviews = () => {
             </button>
           </div>)}
 
-        {/* Filter controls panel */}
         <div className="card card-custom p-3 mb-4">
           <div className="row align-items-center justify-content-between g-3">
             <div className="col-12 col-md-6 d-flex align-items-center gap-2">
@@ -125,7 +121,6 @@ export const Reviews = () => {
           </div>
         </div>
 
-        {/* Review list */}
         <div className="row">
           {filteredReviews.length > 0 ? (<div className="col-12 col-lg-8 mx-auto">
               {filteredReviews.map((review, index) => (<ReviewCard key={review.id || index} {...review} onCompanyClick={handleCompanyClick} onDeleteClick={auth.user && review.authorEmail === auth?.user?.email ? handleDeleteReview : undefined} onEditClick={auth.user && review.authorEmail === auth?.user?.email ? handleEditReview : undefined}/>))}
