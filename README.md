@@ -13,10 +13,10 @@ A community-driven platform where tech professionals discover, share, and evalua
 
 ## Live Demo
 
-| **Deployed App** | https://reevue.vercel.app |
-| **GitHub Repo** | https://github.com/rehab860/DEPI_REACT |
-
----
+| Resource | Link |
+|---|---|
+| Deployed App | [Reevue App](https://reevue.vercel.app) |
+| GitHub Repo | [Source Code](https://github.com/rehab860/DEPI_REACT) |
 
 ## Tech Stack
 
