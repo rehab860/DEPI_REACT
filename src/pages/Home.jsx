@@ -30,7 +30,6 @@ function Home() {
     };
     fetchReviews();
   }, []);
-  
   // Calculate summaries dynamically
   const getCompanySummaries = () => {
     const summariesMap = {}
