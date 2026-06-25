@@ -15,8 +15,18 @@ A community-driven platform where tech professionals discover, share, and evalua
 
 | | |
 |---|---|
+<<<<<<< Updated upstream
 | **App** | https://reevue.vercel.app |
 | **Repo** | https://github.com/your-org/DEPI_REACT |
+=======
+<<<<<<< HEAD
+| **Deployed App** | https://reevue.vercel.app |
+| **GitHub Repo** | https://github.com/rehab860/DEPI_REACT |
+=======
+| **App** | https://reevue.vercel.app |
+| **Repo** | https://github.com/your-org/DEPI_REACT |
+>>>>>>> 21adae92df8bf1dc82a39667a3697a2660dbc73c
+>>>>>>> Stashed changes
 
 ---
 
