@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ReeVue – Technical Documentation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal-700: #0d7490;
+      --teal-500: #06b6d4;
+      --teal-100: #cffafe;
+      --teal-50:  #ecfeff;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-500: #64748b;
+      --slate-400: #94a3b8;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50:  #f8fafc;
+      --white: #ffffff;
+      --green-600: #16a34a;
+      --green-50: #f0fdf4;
+      --amber-600: #d97706;
+      --amber-50: #fffbeb;
+      --purple-600: #9333ea;
+      --purple-50: #faf5ff;
+      --red-600: #dc2626;
+      --red-50: #fef2f2;
+
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+      --radius: 8px;
+      --radius-sm: 4px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.08);
+      --shadow-md: 0 4px 16px rgba(0,0,0,.10);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--slate-50);
+      color: var(--slate-800);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    /* ── SIDEBAR ────────────────────────────────────────── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: 260px;
+      height: 100vh;
+      overflow-y: auto;
+      background: var(--slate-900);
+      color: var(--slate-400);
+      padding: 0 0 40px;
+      z-index: 100;
+      border-right: 1px solid rgba(255,255,255,.05);
+    }
+
+    .sidebar-logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 24px 20px 20px;
+      border-bottom: 1px solid rgba(255,255,255,.07);
+      margin-bottom: 12px;
+    }
+
+    .logo-mark {
+      width: 34px; height: 34px;
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700; color: white; letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    .logo-text { font-size: 15px; font-weight: 600; color: var(--white); }
+    .logo-version { font-size: 11px; color: var(--slate-500); margin-top: 1px; }
+
+    .nav-section-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--slate-600);
+      padding: 14px 20px 6px;
+    }
+
+    .sidebar nav a {
+      display: block;
+      padding: 7px 20px 7px 20px;
+      font-size: 13px;
+      color: var(--slate-400);
+      text-decoration: none;
+      border-left: 2px solid transparent;
+      transition: all .15s ease;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .sidebar nav a:hover,
+    .sidebar nav a.active {
+      color: var(--teal-500);
+      border-left-color: var(--teal-500);
+      background: rgba(6,182,212,.06);
+    }
+
+    .sidebar nav a.sub {
+      padding-left: 32px;
+      font-size: 12.5px;
+      color: var(--slate-500);
+    }
+
+    .sidebar nav a.sub:hover { color: var(--teal-400); }
+
+    /* ── MAIN ───────────────────────────────────────────── */
+    .main {
+      margin-left: 260px;
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ─────────────────────────────────────────── */
+    .doc-header {
+      background: linear-gradient(135deg, var(--slate-900) 0%, #0a2340 60%, #0d4a5a 100%);
+      padding: 64px 60px 56px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .doc-header::before {
+      content: '';
+      position: absolute;
+      top: -80px; right: -80px;
+      width: 360px; height: 360px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .doc-header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; left: 20%;
+      width: 240px; height: 240px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--teal-500);
+      margin-bottom: 16px;
+    }
+
+    .header-title {
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: -1px;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+
+    .header-title span { color: var(--teal-500); }
+
+    .header-subtitle {
+      font-size: 15px;
+      color: var(--slate-400);
+      max-width: 560px;
+      margin-bottom: 32px;
+      line-height: 1.65;
+    }
+
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    .badge-teal  { background: rgba(6,182,212,.12); color: #67e8f9; border-color: rgba(6,182,212,.25); }
+    .badge-slate { background: rgba(100,116,139,.15); color: #94a3b8; border-color: rgba(100,116,139,.2); }
+
+    /* ── CONTENT AREA ───────────────────────────────────── */
+    .content {
+      max-width: 900px;
+      padding: 48px 60px 80px;
+    }
+
+    /* ── SECTIONS ───────────────────────────────────────── */
+    .doc-section {
+      margin-bottom: 64px;
+      scroll-margin-top: 24px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--slate-200);
+    }
+
+    .section-num {
+      width: 28px; height: 28px;
+      background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+      color: white;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--slate-900);
+      letter-spacing: -.4px;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--slate-800);
+      margin: 28px 0 12px;
+      letter-spacing: -.2px;
+    }
+
+    p { margin-bottom: 14px; color: var(--slate-700); }
+
+    /* ── CALLOUT ────────────────────────────────────────── */
+    .callout {
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 18px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      font-size: 14px;
+    }
+
+    .callout-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+    .callout p { margin: 0; }
+
+    .callout-info    { background: var(--teal-50);   border-left: 3px solid var(--teal-500); color: var(--teal-700); }
+    .callout-tip     { background: var(--green-50);  border-left: 3px solid var(--green-600); color: var(--green-600); }
+    .callout-warning { background: var(--amber-50);  border-left: 3px solid var(--amber-600); color: var(--amber-600); }
+
+    /* ── TABLES ─────────────────────────────────────────── */
+    .table-wrap {
+      overflow-x: auto;
+      border-radius: var(--radius);
+      border: 1px solid var(--slate-200);
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    thead { background: var(--slate-800); }
+
+    thead th {
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      color: var(--slate-300);
+      white-space: nowrap;
+    }
+
+    tbody tr { border-top: 1px solid var(--slate-100); transition: background .1s; }
+    tbody tr:hover { background: var(--slate-50); }
+
+    td {
+      padding: 11px 16px;
+      color: var(--slate-700);
+      vertical-align: top;
+    }
+
+    td:first-child { font-weight: 500; color: var(--slate-800); }
+
+    /* ── CODE ───────────────────────────────────────────── */
+    code {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      background: var(--slate-100);
+      color: var(--teal-700);
+      padding: 1px 6px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--slate-200);
+    }
+
+    pre {
+      background: var(--slate-900);
+      color: #e2e8f0;
+      border-radius: var(--radius);
+      padding: 20px 22px;
+      overflow-x: auto;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      line-height: 1.65;
+      margin-bottom: 20px;
+      border: 1px solid rgba(255,255,255,.06);
+      position: relative;
+    }
+
+    pre .comment { color: var(--slate-500); }
+    pre .kw      { color: #7dd3fc; }
+    pre .str     { color: #86efac; }
+    pre .cmd     { color: var(--teal-500); }
+
+    .pre-label {
+      position: absolute;
+      top: 10px; right: 14px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--slate-500);
+    }
+
+    /* ── LISTS ──────────────────────────────────────────── */
+    ul, ol {
+      padding-left: 20px;
+      margin-bottom: 16px;
+    }
+
+    li {
+      color: var(--slate-700);
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+
+    li strong { color: var(--slate-800); }
+
+    /* ── ROUTE CARDS ────────────────────────────────────── */
+    .route-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .route-card {
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      background: var(--white);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .route-card.protected {
+      border-color: var(--teal-100);
+      background: var(--teal-50);
+    }
+
+    .route-path {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--teal-700);
+      margin-bottom: 4px;
+    }
+
+    .route-component {
+      font-size: 11.5px;
+      font-weight: 600;
+      color: var(--slate-600);
+      margin-bottom: 4px;
+    }
+
+    .route-desc { font-size: 12.5px; color: var(--slate-500); line-height: 1.5; }
+
+    .route-tag {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      padding: 1px 6px;
+      border-radius: 4px;
+      margin-bottom: 6px;
+    }
+
+    .tag-public    { background: #dcfce7; color: #15803d; }
+    .tag-protected { background: #cffafe; color: #0e7490; }
+
+    /* ── FLOW DIAGRAM ───────────────────────────────────── */
+    .flow {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .flow-title {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--slate-500);
+      margin-bottom: 16px;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 13px;
+      top: 28px;
+      width: 1px;
+      height: calc(100% + 4px);
+      background: var(--slate-200);
+    }
+
+    .flow-dot {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: var(--teal-50);
+      border: 2px solid var(--teal-500);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700;
+      color: var(--teal-700);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .flow-content { padding-top: 2px; }
+    .flow-action { font-size: 13.5px; font-weight: 600; color: var(--slate-800); }
+    .flow-detail { font-size: 12.5px; color: var(--slate-500); margin-top: 2px; }
+
+    /* ── WIZARD STEPS ───────────────────────────────────── */
+    .step-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 20px; }
+
+    .step-item {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .step-badge {
+      width: 24px; height: 24px;
+      background: var(--slate-800);
+      color: white;
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .step-label { font-size: 13px; font-weight: 600; color: var(--slate-800); margin-bottom: 2px; }
+    .step-fields { font-size: 12.5px; color: var(--slate-500); }
+
+    /* ── STORAGE KEY TABLE ──────────────────────────────── */
+    .storage-key {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--teal-700);
+    }
+
+    /* ── CHECKLIST ──────────────────────────────────────── */
+    .checklist { list-style: none; padding: 0; margin-bottom: 16px; }
+
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--slate-100);
+      font-size: 14px;
+    }
+
+    .checklist li:last-child { border-bottom: none; }
+
+    .check-icon {
+      width: 18px; height: 18px;
+      border-radius: 50%;
+      background: var(--green-50);
+      border: 1.5px solid var(--green-600);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px;
+      color: var(--green-600);
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* ── SCRIPT CARDS ───────────────────────────────────── */
+    .script-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+
+    .script-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .script-cmd {
+      font-family: var(--font-mono);
+      font-size: 12.5px;
+      color: var(--teal-700);
+      background: var(--teal-50);
+      border: 1px solid var(--teal-100);
+      border-radius: 4px;
+      padding: 3px 8px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    .script-desc { font-size: 12.5px; color: var(--slate-500); line-height: 1.5; }
+
+    /* ── CONTEXT CARDS ──────────────────────────────────── */
+    .context-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 24px; }
+
+    .context-card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .context-card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--slate-800);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .ctx-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--teal-500);
+      flex-shrink: 0;
+    }
+
+    .context-card p { font-size: 12.5px; color: var(--slate-500); margin: 0; line-height: 1.55; }
+
+    /* ── FOOTER ─────────────────────────────────────────── */
+    .doc-footer {
+      border-top: 1px solid var(--slate-200);
+      margin: 48px 0 0;
+      padding: 24px 0 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-brand {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--slate-500);
+    }
+
+    .footer-brand span { color: var(--teal-600); }
+
+    .footer-meta { font-size: 12px; color: var(--slate-400); }
+
+    /* ── SCROLLBAR ──────────────────────────────────────── */
+    .sidebar::-webkit-scrollbar { width: 4px; }
+    .sidebar::-webkit-scrollbar-track { background: transparent; }
+    .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,.1); border-radius: 2px; }
+
+    /* ── RESPONSIVE ─────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .sidebar { display: none; }
+      .main { margin-left: 0; }
+      .content { padding: 32px 24px 60px; }
+      .doc-header { padding: 40px 24px 36px; }
+      .header-title { font-size: 30px; }
+      .route-grid, .script-grid, .context-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ─────────────────────────────────── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-mark">Rv</div>
+    <div>
+      <div class="logo-text">ReeVue</div>
+      <div class="logo-version">v1.0 · June 2026</div>
+    </div>
+  </div>
+  <nav>
+    <div class="nav-section-label">Overview</div>
+    <a href="#overview">Project Overview</a>
+    <a href="#stack">Technology Stack</a>
+    <a href="#structure">Project Structure</a>
+
+    <div class="nav-section-label">Architecture</div>
+    <a href="#routing">Application Routing</a>
+    <a href="#context">Context & State</a>
+    <a href="#firebase">Firebase Integration</a>
+
+    <div class="nav-section-label">Features</div>
+    <a href="#pages">Pages & Components</a>
+    <a href="#dataflow">Data Flow & Storage</a>
+    <a href="#auth">Authentication</a>
+
+    <div class="nav-section-label">Setup</div>
+    <a href="#gettingstarted">Getting Started</a>
+  </nav>
+</aside>
+
+<!-- ── MAIN ───────────────────────────────────── -->
+<div class="main">
+
+  <!-- HEADER -->
+  <header class="doc-header">
+    <div class="header-eyebrow">Technical Documentation · v1.0</div>
+    <h1 class="header-title">Ree<span>Vue</span></h1>
+    <p class="header-subtitle">
+      A community-driven tech career review platform where engineers discover, share, and evaluate real interview experiences and workplace insights across top technology companies.
+    </p>
+    <div class="badge-row">
+      <span class="badge badge-teal">⚛ React 19</span>
+      <span class="badge badge-teal">🔥 Firebase 12</span>
+      <span class="badge badge-teal">⚡ Vite 8</span>
+      <span class="badge badge-slate">Bootstrap 5</span>
+      <span class="badge badge-slate">React Router 7</span>
+      <span class="badge badge-slate">Cloud Firestore</span>
+    </div>
+  </header>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- ── 1. OVERVIEW ──────────────────────────────── -->
+    <section class="doc-section" id="overview">
+      <div class="section-header">
+        <div class="section-num">1</div>
+        <h2>Project Overview</h2>
+      </div>
+
+      <p>
+        ReeVue is a web application enabling engineers and tech professionals to discover, share, and evaluate interview experiences and job reviews at major technology companies. The platform functions as a community-driven resource that helps users make informed career decisions based on authentic peer experiences.
+      </p>
+
+      <div class="callout callout-info">
+        <div class="callout-icon">💡</div>
+        <p><strong>Core idea:</strong> Aggregated, anonymous feedback from real candidates — giving job seekers an honest picture before they walk into an interview room.</p>
+      </div>
+
+      <h3>Core Features</h3>
+      <ul>
+        <li><strong>Anonymous interview feedback</strong> from verified candidates at top tech companies</li>
+        <li><strong>Aggregated company ratings</strong> with difficulty assessments for full interview loops</li>
+        <li><strong>Community Q&A forum</strong> for technical and behavioral interview preparation</li>
+        <li><strong>Personalized profiles</strong> tracking user contributions, badges, and saved companies</li>
+      </ul>
+
+      <h3>Target Audience</h3>
+      <ul>
+        <li>Computer science students preparing for tech industry interviews</li>
+        <li>Software engineers evaluating career opportunities at new companies</li>
+        <li>Tech professionals looking to share and document workplace experiences</li>
+      </ul>
+    </section>
+
+    <!-- ── 2. STACK ─────────────────────────────────── -->
+    <section class="doc-section" id="stack">
+      <div class="section-header">
+        <div class="section-num">2</div>
+        <h2>Technology Stack</h2>
+      </div>
+
+      <h3>Frontend</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Technology</th>
+              <th>Version</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>React</td><td><code>^19.2.6</code></td><td>Core UI framework with functional components and hooks</td></tr>
+            <tr><td>React DOM</td><td><code>^19.2.6</code></td><td>Renders React component trees to the DOM</td></tr>
+            <tr><td>React Router DOM</td><td><code>^7.18.0</code></td><td>Client-side routing and navigation management</td></tr>
+            <tr><td>Vite</td><td><code>^8.0.12</code></td><td>Build tool and dev server with hot module replacement</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Backend & Database</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Service</th>
+              <th>Version</th>
+              <th>Usage</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Firebase</td><td><code>^12.15.0</code></td><td>Backend-as-a-Service platform</td></tr>
+            <tr><td>Firebase Auth</td><td>included</td><td>Email/password user authentication</td></tr>
+            <tr><td>Cloud Firestore</td><td>included</td><td>NoSQL database for reviews with real-time sync</td></tr>
+            <tr><td>Firebase Analytics</td><td>included</td><td>User engagement and usage tracking</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>UI & Styling</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Library</th>
+              <th>Version</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>Bootstrap</td><td><code>^5.3.8</code></td><td>Responsive grid system and utility classes</td></tr>
+            <tr><td>Bootstrap Icons</td><td><code>^1.13.1</code></td><td>Icon library used throughout the UI</td></tr>
+            <tr><td>SweetAlert2</td><td><code>^11.26.25</code></td><td>Styled modal dialogs replacing native browser alerts</td></tr>
+            <tr><td>custom.css</td><td>—</td><td>Teal brand theme, dark mode, and animations</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 3. STRUCTURE ─────────────────────────────── -->
+    <section class="doc-section" id="structure">
+      <div class="section-header">
+        <div class="section-num">3</div>
+        <h2>Project Structure</h2>
+      </div>
+
+      <p>The project follows a standard Vite + React architecture with clear separation of concerns across pages, components, context, and Firebase configuration.</p>
+
+      <pre><span class="comment"># DEPI_REACT-main/</span>
+├── public/               <span class="comment"># Static assets (hero images, icons, favicon)</span>
+├── src/
+│   ├── assets/           <span class="comment"># Images bundled by Vite</span>
+│   ├── components/       <span class="comment"># Reusable UI components</span>
+│   ├── context/          <span class="comment"># React Context providers</span>
+│   ├── firebase/         <span class="comment"># Firebase configuration & exports</span>
+│   ├── pages/            <span class="comment"># Full-page route components</span>
+│   ├── App.jsx           <span class="comment"># Root component + routing</span>
+│   ├── App.css           <span class="comment"># Base styles</span>
+│   ├── custom.css        <span class="comment"># Brand theme overrides</span>
+│   └── main.jsx          <span class="comment"># Application entry point</span>
+├── index.html            <span class="comment"># HTML shell template</span>
+├── package.json          <span class="comment"># Dependencies manifest</span>
+└── vite.config.js        <span class="comment"># Vite build configuration</span><div class="pre-label">File Tree</div></pre>
+
+      <h3>Components Directory</h3>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>Navbar.jsx</code></td><td>Top navigation with search, active tab highlighting, user menu, and theme toggle</td></tr>
+            <tr><td><code>Footer.jsx</code></td><td>Site-wide footer with links and branding</td></tr>
+            <tr><td><code>ReviewCard.jsx</code></td><td>Single review display with rating, pros/cons, difficulty badge, and edit/delete actions</td></tr>
+            <tr><td><code>StarRating.jsx</code></td><td>Dual-mode star component — interactive (input) and display (read-only)</td></tr>
+            <tr><td><code>CompanyDetails.jsx</code></td><td>Company profile body with aggregated stats and filtered review list</td></tr>
+            <tr><td><code>SubmitReview.jsx</code></td><td>Inner wizard component (also has a full-page version in <code>/pages</code>)</td></tr>
+            <tr><td><code>Login.jsx</code></td><td>Compact login form component (also has a full-page version in <code>/pages</code>)</td></tr>
+            <tr><td><code>Profile.jsx</code></td><td>User profile card sub-component</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 4. ROUTING ───────────────────────────────── -->
+    <section class="doc-section" id="routing">
+      <div class="section-header">
+        <div class="section-num">4</div>
+        <h2>Application Routing</h2>
+      </div>
+
+      <p>ReeVue uses <strong>React Router DOM v7</strong> with <code>BrowserRouter</code>. Routes are declared in <code>App.jsx</code> and split into public and protected sections via a <code>ProtectedRoute</code> guard component.</p>
+
+      <h3>Public Routes</h3>
+      <div class="route-grid">
+        <div class="route-card">
+          <div class="route-tag tag-public">Public</div>
+          <div class="route-path">/</div>
+          <div class="route-component">Home</div>
+          <div class="route-desc">Landing page with hero, company directory, and featured reviews</div>
+        </div>
+        <div class="route-card">
+          <div class="route-tag tag-public">Public</div>
+          <div class="route-path">/reviews</div>
+          <div class="route-component">Reviews</div>
+          <div class="route-desc">All reviews with filter and sort controls</div>
+        </div>
+        <div class="route-card">
+          <div class="route-tag tag-public">Public</div>
+          <div class="route-path">/search</div>
+          <div class="route-component">Search</div>
+          <div class="route-desc">Search results page, receives <code>?q=</code> query param</div>
+        </div>
+        <div class="route-card">
+          <div class="route-tag tag-public">Public</div>
+          <div class="route-path">/company/:name</div>
+          <div class="route-component">CompanyProfile</div>
+          <div class="route-desc">Per-company profile with aggregated stats and filtered reviews</div>
+        </div>
+        <div class="route-card">
+          <div class="route-tag tag-public">Public</div>
+          <div class="route-path">/login</div>
+          <div class="route-component">Login</div>
+          <div class="route-desc">Email/password sign-in form</div>
+        </div>
+        <div class="route-card">
+          <div class="route-tag tag-public">Public</div>
+          <div class="route-path">/signup</div>
+          <div class="route-component">SignUp</div>
+          <div class="route-desc">Registration form with password strength meter</div>
+        </div>
+      </div>
+
+      <h3>Protected Routes</h3>
+      <p>These routes require an authenticated user. Unauthenticated visitors are redirected to <code>/login</code> via the <code>ProtectedRoute</code> component.</p>
+      <div class="route-grid">
+        <div class="route-card protected">
+          <div class="route-tag tag-protected">Protected</div>
+          <div class="route-path">/submit-review</div>
+          <div class="route-component">SubmitReview</div>
+          <div class="route-desc">5-step wizard to submit or edit a review</div>
+        </div>
+        <div class="route-card protected">
+          <div class="route-tag tag-protected">Protected</div>
+          <div class="route-path">/profile</div>
+          <div class="route-component">UserProfile</div>
+          <div class="route-desc">User dashboard with reviews, saved companies, Q&A, and settings</div>
+        </div>
+        <div class="route-card protected">
+          <div class="route-tag tag-protected">Protected</div>
+          <div class="route-path">/savedcompanies</div>
+          <div class="route-component">SavedCompanies</div>
+          <div class="route-desc">Bookmarked companies list</div>
+        </div>
+        <div class="route-card protected">
+          <div class="route-tag tag-protected">Protected</div>
+          <div class="route-path">/qa</div>
+          <div class="route-component">InterviewQA</div>
+          <div class="route-desc">Community interview Q&A forum</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 5. CONTEXT ───────────────────────────────── -->
+    <section class="doc-section" id="context">
+      <div class="section-header">
+        <div class="section-num">5</div>
+        <h2>Context & State Management</h2>
+      </div>
+
+      <p>ReeVue uses the <strong>React Context API</strong> for global state. Three context providers wrap the app from the outside in — no third-party state library required.</p>
+
+      <div class="context-grid">
+        <div class="context-card">
+          <div class="context-card-title"><div class="ctx-dot"></div>ThemeContext</div>
+          <p>Manages light/dark mode toggle. Persists preference to <code>localStorage</code> under <code>reevue_theme</code>.</p>
+        </div>
+        <div class="context-card">
+          <div class="context-card-title"><div class="ctx-dot"></div>AuthContext</div>
+          <p>Handles authentication, session persistence, and real-time Firestore review sync via <code>onSnapshot</code>.</p>
+        </div>
+        <div class="context-card">
+          <div class="context-card-title"><div class="ctx-dot"></div>CompaniesContext</div>
+          <p>Lightweight context for global company search filters, managed with <code>useReducer</code>.</p>
+        </div>
+      </div>
+
+      <h3>ThemeContext</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Export</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>isDark</code></td><td>boolean</td><td>Current theme state</td></tr>
+            <tr><td><code>toggleTheme()</code></td><td>void</td><td>Switches and persists theme; applies <code>.dark</code> to <code>document.body</code></td></tr>
+            <tr><td><code>useTheme()</code></td><td>hook</td><td>Exported hook for consuming the theme context</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>AuthContext</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Property / Method</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>user</code></td><td>Object | null</td><td>Current user: <code>{ name, email, bio, uid }</code></td></tr>
+            <tr><td><code>isLoggedIn</code></td><td>boolean</td><td>Derived from <code>!!user</code></td></tr>
+            <tr><td><code>login(email, pw)</code></td><td>Promise</td><td>Calls Firebase <code>signInWithEmailAndPassword</code></td></tr>
+            <tr><td><code>signup(email, pw, name)</code></td><td>Promise</td><td>Creates Firebase account + sets <code>displayName</code></td></tr>
+            <tr><td><code>logout()</code></td><td>Promise</td><td>Signs out from Firebase, clears localStorage</td></tr>
+            <tr><td><code>updateProfile(payload)</code></td><td>Promise</td><td>Updates local state and Firebase display name</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="callout callout-warning">
+        <div class="callout-icon">⚠️</div>
+        <p><strong>Note:</strong> <code>window.alert</code> is globally overridden with SweetAlert2 modals. The app renders <code>null</code> (a loading screen) until both <code>authLoading</code> and <code>dbLoading</code> resolve to <code>false</code>.</p>
+      </div>
+
+      <h3>CompaniesContext</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Export</th><th>Type</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>searchFilters</code></td><td>Object</td><td><code>{ industry, city, companySize, starRating, difficulty }</code> — all default to <code>'All'</code> / null</td></tr>
+            <tr><td><code>setFilters(payload)</code></td><td>dispatch</td><td>Dispatches <code>SET_FILTERS</code> to merge partial filter updates</td></tr>
+            <tr><td><code>resetFilters()</code></td><td>dispatch</td><td>Dispatches <code>RESET_FILTERS</code> to restore initial state</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ── 6. FIREBASE ──────────────────────────────── -->
+    <section class="doc-section" id="firebase">
+      <div class="section-header">
+        <div class="section-num">6</div>
+        <h2>Firebase Integration</h2>
+      </div>
+
+      <p>Firebase is configured in <code>src/firebase/config.js</code> and exports three services consumed across the application.</p>
+
+      <h3>Exported Services</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Export</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr><td><code>auth</code></td><td>Firebase Authentication instance</td></tr>
+            <tr><td><code>db</code></td><td>Cloud Firestore database instance</td></tr>
+            <tr><td><code>app</code></td><td>Firebase app instance</td></tr>
+            <tr><td><code>analytics</code></td><td>Firebase Analytics instance</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Firestore Collections</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Collection</th><th>Key Fields</th><th>Description</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><code>reviews</code></td>
+              <td><code>companyName</code>, <code>jobTitle</code>, <code>rating</code>, <code>difficulty</code>, <code>pros</code>, <code>cons</code>, <code>authorEmail</code>, <code>recommend</code>, <code>isAnonymous</code>, <code>createdAt</code>, <code>helpfulCount</code></td>
+              <td>Primary data store. Queried in real-time via <code>onSnapshot</code> in AuthContext. New documents added via <code>addDoc</code> with <code>serverTimestamp</code>.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Firebase Operations</h3>
+      <ul>
+        <li><strong>CRUD:</strong> <code>getDocs</code>, <code>addDoc</code>, <code>updateDoc</code>, <code>deleteDoc</code>, <code>getDoc</code></li>
+        <li><strong>Auth:</strong> <code>onAuthStateChanged</code>, <code>signInWithEmailAndPassword</code>, <code>createUserWithEmailAndPassword</code>, <code>signOut</code>, <code>updateProfile</code></li>
+        <li><strong>Real-time:</strong> <code>onSnapshot</code> listener on the reviews collection</li>
+        <li><strong>Timestamps:</strong> <code>serverTimestamp</code> for consistent server-side review ordering</li>
+      </ul>
+    </section>
+
+    <!-- ── 7. PAGES ─────────────────────────────────── -->
+    <section class="doc-section" id="pages">
+      <div class="section-header">
+        <div class="section-num">7</div>
+        <h2>Pages & Components</h2>
+      </div>
+
+      <h3>Home Page <code>/</code></h3>
+      <p>The landing page is composed of three distinct sections:</p>
+      <ul>
+        <li><strong>Hero Section:</strong> Full-viewport background image with light/dark variant, headline, and CTAs. Background switches based on <code>isDark</code> from ThemeContext.</li>
+        <li><strong>Company Directory:</strong> Dynamically built from Firestore review data. Groups reviews by company, calculates average rating and modal interview difficulty. Each card navigates to <code>/company/:name</code>.</li>
+        <li><strong>Highest Rated Reviews:</strong> Fetches all reviews, sorts by rating descending, displays the top 2 using <code>ReviewCard</code>.</li>
+      </ul>
+
+      <h3>Reviews Page <code>/reviews</code></h3>
+      <p>A filterable, sortable list of all reviews synced from Firestore into localStorage.</p>
+      <ul>
+        <li>Filter by interview difficulty: All, Easy, Medium, Hard</li>
+        <li>Sort by: Most Helpful, Highest Rated, Newest First</li>
+        <li>Text search across <code>companyName</code>, <code>jobTitle</code>, <code>pros</code>, and <code>cons</code> fields</li>
+        <li>Review owners see Edit and Delete action buttons on their <code>ReviewCard</code> components</li>
+      </ul>
+
+      <h3>Submit Review <code>/submit-review</code> <span class="route-tag tag-protected" style="font-size:10px;">Protected</span></h3>
+      <p>A 5-step guided wizard for submitting or editing a review:</p>
+      <div class="step-list">
+        <div class="step-item">
+          <div class="step-badge">1</div>
+          <div>
+            <div class="step-label">Company Profile</div>
+            <div class="step-fields">Company Name, Industry Sector</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-badge">2</div>
+          <div>
+            <div class="step-label">Role Specifications</div>
+            <div class="step-fields">Job Title, Employment Type, Location City</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-badge">3</div>
+          <div>
+            <div class="step-label">Workspace Insights</div>
+            <div class="step-fields">Pros (15+ chars), Cons (15+ chars)</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-badge">4</div>
+          <div>
+            <div class="step-label">Experience Rating</div>
+            <div class="step-fields">Star Rating (1–5), Difficulty (Easy / Medium / Hard), Recommend toggle</div>
+          </div>
+        </div>
+        <div class="step-item">
+          <div class="step-badge">5</div>
+          <div>
+            <div class="step-label">Review & Publish</div>
+            <div class="step-fields">Live preview, anonymous posting toggle, submit or save draft</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-tip">
+        <div class="callout-icon">✓</div>
+        <p>Drafts auto-save to <code>reevue_review_draft</code> in localStorage. Edit mode loads existing review data from Firestore by <code>editingReviewId</code> passed via router state.</p>
+      </div>
+
+      <h3>Company Profile <code>/company/:name</code></h3>
+      <p>Reads the company name from URL params, loads all reviews from localStorage, then renders <code>CompanyDetails</code> — which handles: aggregated rating summary, difficulty breakdown, per-review list filtered to that company, and a Write Review CTA.</p>
+
+      <h3>Search <code>/search</code></h3>
+      <p>Receives a query string via <code>?q=</code> URL parameter. Filters reviews across <code>companyName</code>, <code>jobTitle</code>, <code>pros</code>, and <code>cons</code> fields. Also computes matching company cards with aggregated stats. Authenticated users can edit/delete their own reviews inline.</p>
+
+      <h3>Interview Q&A <code>/qa</code> <span class="route-tag tag-protected" style="font-size:10px;">Protected</span></h3>
+      <ul>
+        <li>Questions stored in localStorage (<code>reevue_qa_v1</code>) with seed data for Google, Stripe, Meta, Amazon</li>
+        <li>Department filter: All, Engineering, Product, Design, Operations, Other</li>
+        <li>Accordion-style expand/collapse per question</li>
+        <li>Add Question form: company name, department, and question text (10+ chars)</li>
+        <li>Inline answer input under each expanded question</li>
+      </ul>
+
+      <h3>User Profile <code>/profile</code> <span class="route-tag tag-protected" style="font-size:10px;">Protected</span></h3>
+      <p>A four-tab personal dashboard:</p>
+      <ul>
+        <li><strong>My Reviews:</strong> All reviews authored by the logged-in user. Supports inline edit and delete.</li>
+        <li><strong>Saved Companies:</strong> Bookmarked companies loaded from <code>reevue_saved_companies</code>.</li>
+        <li><strong>My Q&A:</strong> Q&A questions submitted by the user or with community answers.</li>
+        <li><strong>Settings:</strong> Name and bio edits synced to AuthContext + Firebase. Notification preferences (UI only).</li>
+      </ul>
+      <p>Achievement badges are dynamically awarded based on review count and helpful vote thresholds.</p>
+
+      <h3>Login & Sign Up <code>/login</code> <code>/signup</code></h3>
+      <p>Both pages hide the Navbar and Footer via an <code>isLoginPage</code> check in <code>App.jsx</code>. Login performs email format and 8-character password validation before calling Firebase. Sign Up includes a password strength meter (Weak / Fair / Good / Strong) and optional phone and bio fields.</p>
+    </section>
+
+    <!-- ── 8. DATA FLOW ──────────────────────────────── -->
+    <section class="doc-section" id="dataflow">
+      <div class="section-header">
+        <div class="section-num">8</div>
+        <h2>Data Flow & Storage</h2>
+      </div>
+
+      <h3>localStorage Keys</h3>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Key</th><th>Type</th><th>Content</th></tr></thead>
+          <tbody>
+            <tr><td class="storage-key">reevue_auth_v1</td><td>JSON</td><td><code>{ user: { name, email, bio, uid } }</code> — persisted login session</td></tr>
+            <tr><td class="storage-key">reevue_reviews_v1</td><td>JSON Array</td><td>All reviews mirrored from Firestore for fast local reads</td></tr>
+            <tr><td class="storage-key">reevue_review_draft</td><td>JSON</td><td>In-progress review wizard state for draft recovery</td></tr>
+            <tr><td class="storage-key">reevue_qa_v1</td><td>JSON Array</td><td>Interview Q&A entries (local-only, no Firestore sync)</td></tr>
+            <tr><td class="storage-key">reevue_theme</td><td>String</td><td><code>'dark'</code> or <code>'light'</code> — persisted theme preference</td></tr>
+            <tr><td class="storage-key">reevue_saved_companies</td><td>JSON Array</td><td>User-bookmarked company objects (local-only)</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Reviews Data Flow</h3>
+      <div class="flow">
+        <div class="flow-title">Reviews Lifecycle</div>
+        <div class="flow-step">
+          <div class="flow-dot">1</div>
+          <div class="flow-content">
+            <div class="flow-action">User submits review form</div>
+            <div class="flow-detail"><code>addDoc()</code> writes new document to Firestore <code>reviews</code> collection</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">2</div>
+          <div class="flow-content">
+            <div class="flow-action">AuthContext onSnapshot fires</div>
+            <div class="flow-detail">Updates <code>latestReviewsRef</code> and writes to <code>reevue_reviews_v1</code> in localStorage</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">3</div>
+          <div class="flow-content">
+            <div class="flow-action">Pages read from localStorage</div>
+            <div class="flow-detail">All components read synchronously for fast access without waiting on Firestore</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">4</div>
+          <div class="flow-content">
+            <div class="flow-action">Deletions cascade to Firestore</div>
+            <div class="flow-detail"><code>localStorage.setItem</code> is intercepted, compared with Firestore mirror, then <code>deleteDoc</code> is called on missing items</div>
+          </div>
+        </div>
+      </div>
+
+      <h3>Auth Data Flow</h3>
+      <div class="flow">
+        <div class="flow-title">Authentication Lifecycle</div>
+        <div class="flow-step">
+          <div class="flow-dot">1</div>
+          <div class="flow-content">
+            <div class="flow-action">User logs in</div>
+            <div class="flow-detail">Firebase Auth → <code>onAuthStateChanged</code> fires → formats user object and persists to localStorage</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">2</div>
+          <div class="flow-content">
+            <div class="flow-action">App loads</div>
+            <div class="flow-detail"><code>loadAuthState()</code> reads localStorage immediately for zero-flash auth persistence</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-dot">3</div>
+          <div class="flow-content">
+            <div class="flow-action">User logs out</div>
+            <div class="flow-detail">Removes localStorage entry → calls <code>Firebase signOut()</code> → clears user state</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 9. AUTH ───────────────────────────────────── -->
+    <section class="doc-section" id="auth">
+      <div class="section-header">
+        <div class="section-num">9</div>
+        <h2>Authentication System</h2>
+      </div>
+
+      <p>ReeVue implements a full Firebase Authentication flow with persistent sessions. The <code>ProtectedRoute</code> guard ensures all sensitive routes redirect unauthenticated visitors.</p>
+
+      <h3>Sign Up Flow</h3>
+      <ul>
+        <li>User fills in first name, last name, email, optional phone, password (8+), confirm password, optional bio</li>
+        <li>Client-side validation runs before any network call</li>
+        <li><code>createUserWithEmailAndPassword</code> creates the Firebase account</li>
+        <li><code>updateProfile</code> sets the <code>displayName</code> on the Firebase Auth user</li>
+        <li><code>onAuthStateChanged</code> fires, formats the user object, persists to localStorage</li>
+        <li>User is redirected to the home page</li>
+      </ul>
+
+      <h3>Login Flow</h3>
+      <ul>
+        <li>Email format and password length validated client-side before any network call</li>
+        <li><code>signInWithEmailAndPassword</code> called with Firebase Auth</li>
+        <li>On success, <code>onAuthStateChanged</code> updates context state</li>
+        <li>User is redirected to the home page</li>
+      </ul>
+
+      <h3>Protected Route Guard</h3>
+      <p><code>ProtectedRoute</code> is an <code>Outlet</code> wrapper that reads <code>isLoggedIn</code> from <code>AuthContext</code>. If <code>false</code>, it renders <code>&lt;Navigate to="/login" replace /&gt;</code>. All four protected routes are nested under a single <code>ProtectedRoute</code> element in the routes tree.</p>
+
+      <h3>Logout</h3>
+      <ul>
+        <li>Removes <code>reevue_auth_v1</code> from localStorage</li>
+        <li>Sets <code>user</code> state to <code>null</code></li>
+        <li>Calls Firebase <code>signOut()</code></li>
+        <li>Navigates to the home page</li>
+      </ul>
+    </section>
+
+    <!-- ── 10. GETTING STARTED ──────────────────────── -->
+    <section class="doc-section" id="gettingstarted">
+      <div class="section-header">
+        <div class="section-num">10</div>
+        <h2>Getting Started</h2>
+      </div>
+
+      <h3>Prerequisites</h3>
+      <ul>
+        <li>Node.js 18+ and npm</li>
+        <li>A Firebase project with Authentication (Email/Password) and Firestore enabled</li>
+      </ul>
+
+      <h3>Installation</h3>
+      <pre><span class="comment"># 1. Clone or extract the project</span>
+<span class="cmd">cd</span> DEPI_REACT-main
+
+<span class="comment"># 2. Install dependencies</span>
+<span class="cmd">npm install</span>
+
+<span class="comment"># 3. Configure Firebase</span>
+<span class="comment">#    Edit src/firebase/config.js with your Firebase project credentials</span>
+
+<span class="comment"># 4. Start development server</span>
+<span class="cmd">npm run dev</span>
+
+<span class="comment"># 5. Build for production</span>
+<span class="cmd">npm run build</span><div class="pre-label">bash</div></pre>
+
+      <h3>Available Scripts</h3>
+      <div class="script-grid">
+        <div class="script-card">
+          <div class="script-cmd">npm run dev</div>
+          <div class="script-desc">Start Vite development server with hot module replacement</div>
+        </div>
+        <div class="script-card">
+          <div class="script-cmd">npm run build</div>
+          <div class="script-desc">Build optimized production bundle to the <code>/dist</code> directory</div>
+        </div>
+        <div class="script-card">
+          <div class="script-cmd">npm run preview</div>
+          <div class="script-desc">Preview the production build locally before deployment</div>
+        </div>
+        <div class="script-card">
+          <div class="script-cmd">npm run lint</div>
+          <div class="script-desc">Run ESLint with React hooks and refresh plugin rules</div>
+        </div>
+      </div>
+
+      <h3>Firebase Setup Checklist</h3>
+      <ul class="checklist">
+        <li><div class="check-icon">✓</div><span>Create a Firebase project at <code>console.firebase.google.com</code></span></li>
+        <li><div class="check-icon">✓</div><span>Enable <strong>Email/Password</strong> authentication in the Firebase console</span></li>
+        <li><div class="check-icon">✓</div><span>Create a <strong>Firestore</strong> database and set appropriate security rules</span></li>
+        <li><div class="check-icon">✓</div><span>Copy your Firebase config values to <code>src/firebase/config.js</code></span></li>
+        <li><div class="check-icon">✓</div><span>(Optional) Enable <strong>Firebase Analytics</strong> for usage tracking</span></li>
+      </ul>
+    </section>
+
+    <!-- FOOTER -->
+    <div class="doc-footer">
+      <div class="footer-brand"><span>ReeVue</span> — Technical Documentation</div>
+      <div class="footer-meta">Version 1.0 · June 2026</div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+  // Highlight active sidebar link on scroll
+  const sections = document.querySelectorAll('.doc-section');
+  const links    = document.querySelectorAll('.sidebar nav a');
+
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        links.forEach(l => l.classList.remove('active'));
+        const active = document.querySelector(`.sidebar nav a[href="#${entry.target.id}"]`);
+        if (active) active.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-20% 0px -70% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
