@@ -9,34 +9,38 @@ import { db } from '../firebase/config';
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 
 function Home() {
-  const { isDark } = useTheme();
-  const navigate = useNavigate();
   const [reviews, setReviews] = useState([]);
+  const navigate = useNavigate();
+  const { isDark } = useTheme();
 
   useEffect(() => {
+    // بتجيب الرففيوز من الباك
     const fetchReviews = async () => {
       const reviewsRef = collection(db, 'reviews');
-      // Sort reviews by date/timestamp
+      // Sort reviews by date created (الجديد بيظهر فوق)
       const q = query(reviewsRef, orderBy('createdAt', 'desc'));
       const querySnapshot = await getDocs(q);
 
       const reviewsList = [];
       querySnapshot.forEach((doc) => {
         reviewsList.push({ id: doc.id, ...doc.data() });
-      });
+      });//بحول البيانات الي جبتها من الباك لاراي عشان اعرف استخدمهم
 
       setReviews(reviewsList);
     };
-
     fetchReviews();
   }, []);
   // Calculate summaries dynamically
   const getCompanySummaries = () => {
-    const summariesMap = {};
+    const summariesMap = {}
+    // {
+    //   'companyname1': { ratings: [ , , ..], difficulties: [ , , ..] },
+    //   'companyname2': { ratings: [ , , ..], difficulties: [ , , ..] },
+    // }
     reviews.forEach((r) => {
       const name = r.companyName;
-      if (!summariesMap[name]) {
-        summariesMap[name] = { ratings: [], difficulties: [] };
+      if (!summariesMap[name]){  //بشوف الكومباني دي موجودة في الاوبجكت و لا لا
+        summariesMap[name] = { ratings: [], difficulties: [] }
       }
       summariesMap[name].ratings.push(r.rating);
       summariesMap[name].difficulties.push(r.difficulty);
@@ -64,35 +68,33 @@ function Home() {
       };
     });
   };
+  //---------------------
 
-  const handleCompanyClick = (companyName) => {
-    navigate(`/company/${companyName}`);
-  };
-  const summaries = getCompanySummaries();
+  const companySummaries = getCompanySummaries();
   const topReviews = [...reviews].sort((a, b) => b.rating - a.rating).slice(0, 2);
 
   return (
     <>
       <div className="animate-fade-in">
         {/* Hero section */}
-        <section className="section-white d-flex align-items-center" style={{ backgroundImage: `url(${isDark ? '/hero-bg-dark.jpg' : '/hero-bg.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '90vh' }}>
+        <section className="d-flex align-items-center" style={{ backgroundImage: `url(${isDark ? '/hero-bg-dark.jpg' : '/hero-bg.jpg'})`, backgroundSize: 'cover', backgroundPosition: 'center', minHeight: '90vh' }}>
           <div className="container ">
-            <div className="row align-items-center justify-content-between gy-5">
-              <div className="col-12 col-lg-6">
+            <div>
+              <div className="w-50">
                 <h1 className="display-4 fw-bold mb-3" style={{ lineHeight: '1.2', fontFamily: "'Sora', sans-serif" }}>
-                  Find the <span className="text-teal text-gradient" style={{fontFamily: '"Playfair Display", serif',fontStyle: 'italic',fontWeight: 700,}}>Real Truth</span> about Tech Careers
+                  Find the <span className="text-teal text-gradient" style={{ fontFamily: '"Playfair Display", serif', fontStyle: 'italic', fontWeight: 700, }}>Real Truth</span> about Tech Careers
                 </h1>
-                <p className="lead text-muted mb-4" style={{ lineHeight: '1.7' }}>
+                <p className="fs-5 text-muted mb-4" style={{ lineHeight: '1.7' }}>
                   Explore interview difficulty levels, realistic job reviews, pros, and cons. Written by engineers, for engineers.
                 </p>
-                <div className="d-flex flex-wrap gap-3">
-                  <button onClick={() => navigate('/reviews')} className="btn btn-primary-teal rounded-pill d-inline-flex align-items-center gap-2">
-                    <i className="bi bi-fire"></i> Browse Reviews
-                  </button>
-                  <button onClick={() => navigate('/submit-review')} className="btn btn-secondary-custom rounded-pill">
-                    Submit a Review
-                  </button>
-                </div>
+              </div>
+              <div className="d-flex flex-wrap gap-3">
+                <button onClick={() => navigate('/reviews')} className="btn btn-primary-teal rounded-pill d-inline-flex align-items-center gap-2">
+                  <i className="bi bi-fire"></i> Browse Reviews
+                </button>
+                <button onClick={() => navigate('/submit-review')} className="btn btn-secondary-custom rounded-pill">
+                  Submit a Review
+                </button>
               </div>
             </div>
           </div>
@@ -105,9 +107,9 @@ function Home() {
             <p className="text-muted small mb-4">Click a company to view aggregate stats and filtered reviews</p>
             <div className="row g-4">
               {
-                summaries.map((company) => (
+                companySummaries.map((company) => (
                   <div className="col-12 col-sm-6 col-md-3" key={company.name}>
-                    <div onClick={() => handleCompanyClick(company.name)} style={{ cursor: 'pointer' }} className="card card-custom p-4 text-center h-100">
+                    <div onClick={() => navigate(`/company/${company.name}`)} style={{ cursor: 'pointer' }} className="card card-custom p-4 text-center h-100">
                       <h4 className="fw-bold mb-2 text-teal">{company.name}</h4>
                       <div className="d-flex justify-content-center mb-2">
                         <StarRating rating={company.avgRating} mode="display" size="sm" />
@@ -147,7 +149,7 @@ function Home() {
               {
                 topReviews.map((review, index) => (
                   <div className="col-12 col-lg-8 mx-auto" key={review.id || index}>
-                    <ReviewCard {...review} onCompanyClick={handleCompanyClick} />
+                    <ReviewCard {...review} onCompanyClick={(companyName) => navigate(`/company/${companyName}`)} />
                   </div>
                 ))
               }
