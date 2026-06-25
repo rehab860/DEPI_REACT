@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 const INITIAL_QA = [
     {
         id: 'qa-1',
@@ -41,16 +41,13 @@ const INITIAL_QA = [
 export const InterviewQA = () => {
     const [qaList, setQaList] = useState([]);
     const [selectedDept, setSelectedDept] = useState('All');
-    const [expandedQaId, setExpandedQaId] = useState('qa-1'); // Default open first
-    // Add Question Form State
+    const [expandedQaId, setExpandedQaId] = useState('qa-1'); 
     const [companyName, setCompanyName] = useState('');
     const [department, setDepartment] = useState('Engineering');
     const [question, setQuestion] = useState('');
     const [formOpen, setFormOpen] = useState(false);
     const [errors, setErrors] = useState({});
-    // Add Answer Form State
     const [newAnswer, setNewAnswer] = useState('');
-    // Load from localStorage or mock defaults
     useEffect(() => {
         const stored = localStorage.getItem('reevue_qa_v1');
         if (stored) {
@@ -66,7 +63,6 @@ export const InterviewQA = () => {
             localStorage.setItem('reevue_qa_v1', JSON.stringify(INITIAL_QA));
         }
     }, []);
-    // Filter Q&As
     const filteredQa = selectedDept === 'All'
         ? qaList
         : qaList.filter((qa) => qa.department === selectedDept);
@@ -100,7 +96,7 @@ export const InterviewQA = () => {
         setQuestion('');
         setFormOpen(false);
         setErrors({});
-        setExpandedQaId(newQa.id); // Expand newly created question
+        setExpandedQaId(newQa.id); 
         alert('Interview question posted successfully!');
     };
     const handleAddAnswerSubmit = (qaId, e) => {
@@ -124,7 +120,6 @@ export const InterviewQA = () => {
     return (<div className="section-light-teal py-5 animate-fade-in min-vh-75">
       <div className="container">
         
-        {/* Title Header */}
         <div className="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
           <div>
             <h1 className="fw-bold mb-1">Interview Q&A Forum</h1>
@@ -136,7 +131,6 @@ export const InterviewQA = () => {
           </button>
         </div>
 
-        {/* Add Question Expandable Panel */}
         {formOpen && (<div className="row justify-content-center mb-4">
             <div className="col-12 col-lg-8">
               <div className="card card-custom p-4 bg-white border-0 animate-fade-in">
@@ -178,7 +172,6 @@ export const InterviewQA = () => {
             </div>
           </div>)}
 
-        {/* Toolbar Department Filters */}
         <div className="card card-custom p-3 mb-4">
           <div className="d-flex flex-wrap align-items-center gap-2">
             <span className="small text-muted fw-bold d-none d-sm-inline">Department:</span>
@@ -190,13 +183,11 @@ export const InterviewQA = () => {
           </div>
         </div>
 
-        {/* Expandable Accordion List */}
         <div className="row">
           <div className="col-12 col-lg-8 mx-auto">
             {filteredQa.length > 0 ? (filteredQa.map((qa) => {
             const isExpanded = expandedQaId === qa.id;
             return (<div className="card card-custom mb-3 overflow-hidden border-0 shadow-sm" key={qa.id}>
-                    {/* Accordion Trigger header */}
                     <div onClick={() => handleToggleExpand(qa.id)} className="p-3 px-4 d-flex justify-content-between align-items-center bg-white" style={{ cursor: 'pointer', transition: 'background-color 0.2s' }}>
                       <div className="d-flex flex-column gap-1">
                         <div className="d-flex align-items-center gap-2">
@@ -214,13 +205,11 @@ export const InterviewQA = () => {
                       <i className={`bi bi-chevron-${isExpanded ? 'up' : 'down'} text-muted fs-5 ms-3`}></i>
                     </div>
 
-                    {/* Accordion Expandable Content */}
                     {isExpanded && (<div className="p-4 bg-light border-top border-light animate-fade-in">
                         <h6 className="fw-bold mb-3 text-secondary" style={{ fontSize: '0.85rem' }}>
                           COMMUNITY ANSWERS ({qa.answers.length})
                         </h6>
 
-                        {/* List of answers */}
                         {qa.answers.length > 0 ? (<div className="d-flex flex-column gap-3 mb-4">
                             {qa.answers.map((answer, index) => (<div className="p-3 bg-white rounded-3 border-start border-teal border-3 shadow-sm" key={index}>
                                 <p className="small text-secondary mb-0" style={{ lineHeight: '1.6' }}>
@@ -232,7 +221,6 @@ export const InterviewQA = () => {
                             <p className="text-muted small mb-0">No answers posted for this question yet.</p>
                           </div>)}
 
-                        {/* Add Answer Form */}
                         <form onSubmit={(e) => handleAddAnswerSubmit(qa.id, e)} className="card card-custom p-3 shadow-none border-0 bg-white">
                           <label htmlFor={`answerInput-${qa.id}`} className="form-label small fw-bold text-teal mb-2">
                             Share Your Answer

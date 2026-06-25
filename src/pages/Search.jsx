@@ -13,7 +13,7 @@ export const Search = () => {
      
     const [reviews, setReviews] = useState([]);
     const query = searchParams.get('q') || '';
-    // Load reviews list
+
     useEffect(() => {
         const stored = localStorage.getItem('reevue_reviews_v1');
         if (stored) {
@@ -25,9 +25,11 @@ export const Search = () => {
             }
         }
     }, []);
+
     const handleCompanyClick = (companyName) => {
         navigate(`/company/${companyName}`);
     };
+
     const handleDeleteReview = (id) => {
         if (window.confirm('Are you sure you want to delete this review?')) {
             const updated = reviews.filter((r) => r.id !== id);
@@ -35,10 +37,11 @@ export const Search = () => {
             localStorage.setItem('reevue_reviews_v1', JSON.stringify(updated));
         }
     };
+
     const handleEditReview = (id) => {
         navigate('/submit-review', { state: { editingReviewId: id } });
     };
-    // Filter matching reviews
+
     const getMatchingReviews = () => {
         if (!query.trim())
             return [];
@@ -48,12 +51,12 @@ export const Search = () => {
             r.pros.toLowerCase().includes(q) ||
             r.cons.toLowerCase().includes(q));
     };
-    // Filter matching company names
+
     const getMatchingCompanies = () => {
         if (!query.trim())
             return [];
         const q = query.toLowerCase();
-        // Group metrics
+
         const summariesMap = {};
         reviews.forEach((r) => {
             const name = r.companyName;
@@ -80,7 +83,6 @@ export const Search = () => {
     return (<div className="section-light-teal py-5 animate-fade-in min-vh-75">
       <div className="container">
         
-        {/* Header summary */}
         <div className="mb-4">
           <h1 className="fw-bold mb-1">Search Results</h1>
           <p className="text-muted small">
@@ -88,9 +90,7 @@ export const Search = () => {
           </p>
         </div>
 
-        {/* Matches Grid */}
         <div className="row g-4">
-          {/* Companies Matches Column */}
           {matchingCompanies.length > 0 && (<div className="col-12 mb-4">
               <h4 className="fw-bold mb-3 text-dark">Matching Companies</h4>
               <div className="row g-3">
@@ -106,10 +106,13 @@ export const Search = () => {
               </div>
             </div>)}
 
-          {/* Reviews Matches Column */}
           <div className="col-12 col-lg-8">
             <h4 className="fw-bold mb-3 text-dark">Matching Reviews ({matchingReviews.length})</h4>
-            {matchingReviews.length > 0 ? (matchingReviews.map((review, index) => (<ReviewCard key={review.id || index} {...review} onCompanyClick={handleCompanyClick} onDeleteClick={auth.user && review.authorEmail === auth?.user?.email ? handleDeleteReview : undefined} onEditClick={auth.user && review.authorEmail === auth?.user?.email ? handleEditReview : undefined}/>))) : (<div className="text-center py-5 bg-white rounded-3 card-custom shadow-none border-0">
+            {matchingReviews.length > 0 ? (matchingReviews.map((review, index) => 
+                (<ReviewCard key={review.id || index} {...review} onCompanyClick={handleCompanyClick} 
+                onDeleteClick={auth.user && review.authorEmail === auth?.user?.email ? handleDeleteReview : undefined}
+                onEditClick={auth.user && review.authorEmail === auth?.user?.email ? handleEditReview : undefined}/>))) 
+                : (<div className="text-center py-5 bg-white rounded-3 card-custom shadow-none border-0">
                 <i className="bi bi-search text-muted display-4 mb-3 d-block"></i>
                 <h5 className="fw-semibold">No reviews found</h5>
                 <p className="text-muted small">Try searching for other keywords like "Google", "Stripe", or "SRE".</p>

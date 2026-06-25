@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import { StarRating } from './StarRating';
 export const ReviewCard = ({ id, authorEmail, companyName, jobTitle, date, rating, pros, cons, difficulty, recommend, helpfulCount = 0, isAnonymous = false, onCompanyClick, onDeleteClick, onEditClick, }) => {
     const [likes, setLikes] = useState(helpfulCount);
@@ -13,7 +13,7 @@ export const ReviewCard = ({ id, authorEmail, companyName, jobTitle, date, ratin
             setHasLiked(true);
         }
     };
-    // Map difficulty levels to custom CSS classes
+
     const getDifficultyClass = (diff) => {
         switch (diff) {
             case 'Easy':
@@ -27,7 +27,6 @@ export const ReviewCard = ({ id, authorEmail, companyName, jobTitle, date, ratin
         }
     };
     return (<div className="card card-custom p-4 mb-4">
-      {/* Top Header: Company Name + Recommendation Badge */}
       <div className="d-flex flex-wrap justify-content-between align-items-start gap-2 mb-3">
         <div>
           <span onClick={() => onCompanyClick && onCompanyClick(companyName)} style={{ cursor: onCompanyClick ? 'pointer' : 'default' }} className="badge bg-light text-dark border-0 rounded-pill px-3 py-2 fw-semibold fs-7 mb-2 d-inline-block animate-fade-in" title={onCompanyClick ? `View details for ${companyName}` : ''}>
@@ -44,19 +43,16 @@ export const ReviewCard = ({ id, authorEmail, companyName, jobTitle, date, ratin
           </div>
         </div>
 
-        {/* Difficulty Badge (Left-border style) */}
         <div className={`difficulty-badge ${getDifficultyClass(difficulty)}`}>
           {difficulty} Interview
         </div>
       </div>
 
-      {/* Star Rating Section */}
       <div className="d-flex align-items-center gap-2 mb-3">
         <StarRating rating={rating} mode="display" size="md"/>
         <span className="fw-bold text-dark ms-1">{rating.toFixed(1)} / 5.0</span>
       </div>
 
-      {/* Recommendation status */}
       <div className="mb-3">
         {recommend ? (<span className="text-success small fw-semibold d-flex align-items-center gap-1">
             <i className="bi bi-hand-thumbs-up-fill"></i> Recommends this company
@@ -65,7 +61,6 @@ export const ReviewCard = ({ id, authorEmail, companyName, jobTitle, date, ratin
           </span>)}
       </div>
 
-      {/* Pros & Cons Section - Separated by left-bordered panels, no boundaries */}
       <div className="row g-3 mb-3">
         <div className="col-12 col-md-6">
           <div className="p-3 bg-light rounded-3 h-100 border-start border-success border-4">
@@ -90,15 +85,12 @@ export const ReviewCard = ({ id, authorEmail, companyName, jobTitle, date, ratin
         </div>
       </div>
 
-      {/* Card Actions Footer */}
       <div className="d-flex justify-content-between align-items-center pt-2 mt-2">
-        {/* Helpful Vote Button */}
         <button type="button" onClick={handleLikeClick} className={`btn btn-sm d-flex align-items-center gap-2 border-0 px-3 py-2 rounded-pill transition ${hasLiked ? 'btn-primary-teal' : 'btn-secondary-custom'}`} aria-label="Mark review as helpful">
           <i className={`bi bi-hand-thumbs-up${hasLiked ? '-fill' : ''}`}></i>
           <span>Helpful ({likes})</span>
         </button>
 
-        {/* Owned Action Controls vs Report Action */}
         <div className="d-flex gap-2">
           {onEditClick && id && (<button type="button" onClick={() => onEditClick(id)} className="btn btn-sm btn-secondary-custom py-2 px-3 rounded-pill border-0 d-inline-flex align-items-center gap-1" style={{ fontSize: '0.8rem' }}>
               <i className="bi bi-pencil"></i> Edit
