@@ -1,6 +1,6 @@
 # ReeVue
 
-A community-driven platform where engineers discover, share, and evaluate real interview experiences and workplace insights across top technology companies.
+A community-driven platform where tech professionals discover, share, and evaluate real interview experiences and workplace insights across top technology companies.
 
 > Built as a graduation project for the **Digital Egypt Pioneers Initiative (DEPI)** · React Track · 2026
 
