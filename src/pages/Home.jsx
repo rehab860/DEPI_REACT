@@ -30,6 +30,7 @@ function Home() {
     };
     fetchReviews();
   }, []);
+  
   // Calculate summaries dynamically
   const getCompanySummaries = () => {
     const summariesMap = {}
@@ -47,11 +48,12 @@ function Home() {
     });
     return Object.keys(summariesMap).map((name) => {
       const data = summariesMap[name];
-      const avg = data.ratings.reduce((sum, r) => sum + r, 0) / data.ratings.length;
-      const diffCounts = data.difficulties.reduce((acc, curr) => {
-        acc[curr] = (acc[curr] || 0) + 1;
+      const avg = data.ratings.reduce((sum, r) => sum + r, 0) / data.ratings.length; //calculate av. rating
+      const diffCounts = data.difficulties.reduce((acc, curr) => { // بشوف اني لفل صعوبة متكرر اكتر
+        acc[curr] = (acc[curr] || 0) + 1; 
         return acc;
       }, {});
+      
       let modeDifficulty = 'Medium';
       let maxCount = 0;
       Object.keys(diffCounts).forEach((key) => {
@@ -148,7 +150,7 @@ function Home() {
             <div className="row">
               {
                 topReviews.map((review, index) => (
-                  <div className="col-12 col-lg-8 mx-auto" key={review.id || index}>
+                  <div className="col-12 col-lg-8 mx-auto" key={index}>
                     <ReviewCard {...review} onCompanyClick={(companyName) => navigate(`/company/${companyName}`)} />
                   </div>
                 ))

@@ -1,10 +1,10 @@
 import { createContext, useContext, useState } from 'react';
 
 const ThemeContext = createContext();
+export const useTheme = () => useContext(ThemeContext);
 
 export const ThemeProvider = ({ children }) => {
     const [isDark, setIsDark] = useState(() => localStorage.getItem('reevue_theme') === 'dark');
-
     const toggleTheme = () => {
         setIsDark(prev => {
             const next = !prev;
@@ -14,9 +14,9 @@ export const ThemeProvider = ({ children }) => {
         });
     };
 
-    // Apply on mount
-    if (isDark) 
-        document.body.classList.add('dark');
+    useEffect(() => {
+        if (isDark) document.body.classList.add('dark');
+    }, []);
 
     return (
         <ThemeContext.Provider value={{ isDark, toggleTheme }}>
@@ -25,5 +25,3 @@ export const ThemeProvider = ({ children }) => {
     );
 };
 
-export const useTheme = () => useContext(ThemeContext);
-export default ThemeContext;
